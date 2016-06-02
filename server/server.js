@@ -13,7 +13,12 @@ var port = process.env.PORT || 3000;
 var app = express();
 
 // middleware
-app.use(express.static(__dirname + './../public'));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+// app.use(express.static(__dirname + './../public'));
 app.use(bodyParser.json());
 
 //subrouters
@@ -95,4 +100,4 @@ var autoTweet = function() {
 console.log('app listening: ', port);
 var server = app.listen(port);
 var io = require('socket.io').listen(server);
-tweetBot.init(io);
+// tweetBot.init(io);
