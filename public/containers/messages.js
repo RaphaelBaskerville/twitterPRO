@@ -3,21 +3,21 @@ import { connect } from 'react-redux';
 import { getModel } from '../actions/model';
 import { bindActionCreators } from 'redux';
 
-class TargetList extends Component {
+class MessagesList extends Component {
   componentDidMount(){
-    this.props.getModel('target', '/all/true', 'NEW_MODELS');
+    this.props.getModel('message', '/all/true', 'NEW_MODELS');
   }
-
+  
   renderList () {
-    var groupTargets;
+    var groupMessages;
     if (this.props.activeGroup) {
-      groupTargets = this.props.targets.filter((target) => { return target.list === this.props.activeGroup.name; });
-      return groupTargets.map((target) => {
+      groupMessages = this.props.messages.filter((message) => { return message.list === this.props.activeGroup.name; });
+      return groupMessages.map((message) => {
         return (
           <li
           className='list-group-item' 
-          key={ target.handle }> 
-          { target.handle }
+          key={ message.text }> 
+          { message.text}
           </li>
         )
       })
@@ -27,8 +27,8 @@ class TargetList extends Component {
   render () {
     return (
       <ul 
-      className="list-group col-sm-3">
-      targets
+      className="list-group col-sm-6">
+      messages
       { this.renderList() }
       </ul>
     )
@@ -36,9 +36,9 @@ class TargetList extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log('state in TargetList\n', state)
+  console.log('state in MessageList\n', state)
   return {
-    targets: state.models.target,
+    messages: state.models.message,
     activeGroup: state.activeGroup
   }
 }
@@ -47,4 +47,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ getModel: getModel }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TargetList);
+export default connect(mapStateToProps, mapDispatchToProps)(MessagesList);

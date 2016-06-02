@@ -6,6 +6,9 @@ import { getModel } from '../actions/model';
 import { selectGroup } from '../actions/selectGroup';
 
 class GroupList extends Component {
+  componentDidMount(){
+    this.props.getModel('list', '/all/true', 'NEW_MODELS');
+  }
   renderList () {
     console.log('props in GroupList', this.props);
     return this.props.groups.map((group) => {
@@ -25,7 +28,7 @@ class GroupList extends Component {
   render () {
     return (
       <ul className="list-group col-sm-4"
-      onClick={ () => this.props.getModel('list', '/all/true', 'NEW_MODELS') }
+      // onClick={ () => this.props.getModel('list', '/all/true', 'NEW_MODELS') }
       >
       <h2>Group List: </h2>
       {this.renderList()}

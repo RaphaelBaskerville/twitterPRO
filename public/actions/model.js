@@ -6,6 +6,8 @@ export function getModel(type, options, action) {
           .then(json => dispatch(recModel(json, action, type)));
   };
 }
+ 
+
 
 function recModel (data, action, type) {
   console.log('recTargets called');

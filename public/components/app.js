@@ -6,6 +6,7 @@ import GroupList from '../containers/group_list';
 import GroupDetailView from '../containers/group_detail';
 
 export default class App extends Component {
+
   render () {
     return (
        <div>
