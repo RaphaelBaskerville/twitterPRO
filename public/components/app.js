@@ -12,6 +12,7 @@ export default class App extends Component {
        <div>
           <GroupList />
           <GroupDetailView />
+          {this.props.children}
        </div>
     );
   }

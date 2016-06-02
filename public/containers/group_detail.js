@@ -8,7 +8,7 @@ import Hashtags from './hashtags';
 class GroupDetailView extends Component {
   render () {
     return (
-      <div className='col-sm-8'><h2>{ this.props.activeGroup ? this.props.activeGroup.name : "Please Choose a Group"}</h2>
+      <div className='col-sm-8 red'><h2>{ this.props.activeGroup ? this.props.activeGroup.name : "Please Choose a Group"}</h2>
       <Targets />
       <Messages />
       <Hashtags />

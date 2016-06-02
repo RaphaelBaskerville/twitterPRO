@@ -27,10 +27,9 @@ class GroupList extends Component {
 
   render () {
     return (
-      <ul className="list-group col-sm-4"
-      // onClick={ () => this.props.getModel('list', '/all/true', 'NEW_MODELS') }
-      >
+      <ul className="list-group col-sm-4 red">
       <h2>Group List: </h2>
+      select below
       {this.renderList()}
       </ul>
     )
