@@ -1,7 +1,9 @@
 import React, { Component }  from 'react';
 import { connect } from 'react-redux';
-import { getModel } from '../actions/model';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
+
+import { getModel } from '../actions/model';
 
 class TargetList extends Component {
   componentDidMount(){
@@ -13,13 +15,17 @@ class TargetList extends Component {
     if (this.props.activeGroup) {
       groupTargets = this.props.targets.filter((target) => { return target.list === this.props.activeGroup.name; });
       return groupTargets.map((target) => {
+        let route = '/targets/' + target.handle;
+        console.log('route',route);
         return (
-          <li
-          className='list-group-item' 
-          key={ target.handle }> 
-          { target.handle }
+            <li
+            className='list-group-item' 
+            key={ target.handle }> 
+            <Link to={ route }>
+              { target.handle }
+            </Link>
           </li>
-        )
+        );
       })
     }
   }
@@ -27,7 +33,7 @@ class TargetList extends Component {
   render () {
     return (
       <ul 
-      className="list-group col-sm-3">
+      className="list-group col-sm-4">
       targets
       { this.renderList() }
       </ul>

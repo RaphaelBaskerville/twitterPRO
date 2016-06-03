@@ -1,17 +1,15 @@
 import React from 'react';
 import { Component } from 'react';
+import { Link } from 'react-router';
 
 import TargetList from '../containers/targets';
-import GroupList from '../containers/group_list';
-import GroupDetailView from '../containers/group_detail';
 
 export default class App extends Component {
 
   render () {
     return (
        <div>
-          <GroupList />
-          <GroupDetailView />
+          <h1>TwiDerpRo</h1>
           {this.props.children}
        </div>
     );

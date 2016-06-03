@@ -27,7 +27,7 @@ class MessagesList extends Component {
   render () {
     return (
       <ul 
-      className="list-group col-sm-6">
+      className="list-group col-sm-5">
       messages
       { this.renderList() }
       </ul>

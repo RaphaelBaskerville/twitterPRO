@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { getModel } from '../actions/model';
 import { selectGroup } from '../actions/selectGroup';
+import { Link } from 'react-router';
 
 class GroupList extends Component {
   componentDidMount(){
@@ -31,6 +32,7 @@ class GroupList extends Component {
       <h2>Group List: </h2>
       select below
       {this.renderList()}
+      <Link to="groups/create" className="btn btn-primary">New Group</Link>
       </ul>
     )
   }
