@@ -29,6 +29,23 @@ app.get('/', function (err,res){
   res.dendFile(path.join(__dirname, '/../index.html'));
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  console.log('DEV MODE');
+  const webpack = require('webpack');
+  const webpackDevMiddleware = require('webpack-dev-middleware')
+  const webpackHotMiddleware = require('webpack-hot-middleware')
+  const config = require('../webpack.dev.config.js')
+  const compiler = webpack(config)
+
+  app.use(webpackHotMiddleware(compiler))
+  app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }))
+}
+
+
+
 //
 // twitter
 //

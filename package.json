@@ -4,16 +4,21 @@
   "description": "a simple bot for scheduling tweets",
   "main": "index.js",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
-  },
+  "build": "webpack --config ./webpack.prod.config.js --progress --colors",
+  "start": "node ./public/server.js"
+},
   "author": "raphael baskerville",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "babel-core": "^6.2.1",
     "babel-loader": "^6.2.0",
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-react": "^6.1.18",
     "babel-preset-stage-1": "^6.1.18",
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0"
+  },
+  "dependencies": {
     "body-parser": "^1.15.0",
     "chai": "^3.5.0",
     "chai-jquery": "^2.0.0",
@@ -36,8 +41,6 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
     "socket.io": "^1.4.5",
-    "twitter": "^1.2.5",
-    "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.14.0"
+    "twitter": "^1.2.5"
   }
 }
