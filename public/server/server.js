@@ -20,7 +20,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(express.static(__dirname + '../public'));
+app.use(express.static(__dirname + '../../public'));
 app.use(bodyParser.json()); 
 
 //subrouters
