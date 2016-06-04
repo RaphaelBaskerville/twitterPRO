@@ -29,7 +29,7 @@ app.use('/api', require('./routers/apiRoutes.js'));
 app.get('/', function (err,res){
   res.sendFile(path.join(__dirname, '../../index.html'));
 });
-
+console.log('NODE PROCESS', process.env.NODE_ENV);
 if (process.env.NODE_ENV !== 'production') {
   console.log('DEV MODE');
   const webpack = require('webpack');
