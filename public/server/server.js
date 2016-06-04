@@ -20,8 +20,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(express.static(__dirname + './../public'));
-app.use(bodyParser.json());
+app.use(express.static(__dirname + '../../public'));
+app.use(bodyParser.json()); 
 
 //subrouters
 // app.use('/', require('./routers/test.js'));
