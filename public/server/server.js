@@ -19,8 +19,9 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-console.log(__dirname + './public');
-app.use(express.static(__dirname + './../public'));
+var staticPath = path.join(__dirname, '../');
+console.log('static path',staticPath);
+app.use(express.static(staticPath));
 app.use(bodyParser.json()); 
 
 //subrouters
