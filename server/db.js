@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 // var Schema = mongoose.Schema;
 
 // specify which db to use and where it is.
-mongoose.connect('mongodb://localhost/twitterBot');
+// mongoose.connect('mongodb://localhost/twitterBot');
+mongoose.connect(' mongodb://<dbuser>:<dbpassword>@ds045684.mlab.com:45684/simplecrud');
 
 var db = mongoose.connection;
 
