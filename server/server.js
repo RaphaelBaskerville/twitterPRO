@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var schedule = require('node-schedule');
 // twitter bot 
-var tweetBot = require('./twitter.js');
+// var tweetBot = require('./twitter.js');
 
 // database
 var db = require('./db.js');
