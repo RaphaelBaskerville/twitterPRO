@@ -4,9 +4,9 @@
   "description": "a simple bot for scheduling tweets",
   "main": "index.js",
   "scripts": {
-  "build": "webpack --config ./webpack.prod.config.js --progress --colors",
-  "start": "node ./public/server.js"
-},
+    "build": "webpack --config ./webpack.prod.config.js --progress --colors",
+    "start": "node ./public/server/server.js"
+  },
   "author": "raphael baskerville",
   "license": "ISC",
   "devDependencies": {
@@ -41,6 +41,8 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
     "socket.io": "^1.4.5",
-    "twitter": "^1.2.5"
+    "twitter": "^1.2.5",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.10.0"
   }
 }

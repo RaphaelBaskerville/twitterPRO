@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var schedule = require('node-schedule');
+var path = require('path');
 // twitter bot 
 // var tweetBot = require('./twitter.js');
 
@@ -26,7 +27,7 @@ app.use(bodyParser.json());
 // app.use('/', require('./routers/test.js'));
 app.use('/api', require('./routers/apiRoutes.js'));
 app.get('/', function (err,res){
-  res.dendFile(path.join(__dirname, '/../index.html'));
+  res.sendFile(path.join(__dirname, '../../index.html'));
 });
 
 if (process.env.NODE_ENV !== 'production') {
@@ -34,7 +35,7 @@ if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware')
   const webpackHotMiddleware = require('webpack-hot-middleware')
-  const config = require('../webpack.dev.config.js')
+  const config = require('../../webpack.dev.config.js')
   const compiler = webpack(config)
 
   app.use(webpackHotMiddleware(compiler))
