@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import login from '../actions/login';
+import login from '../actions/login';
 import {bindActionCreators} from 'redux';
 import { Link } from 'react-router';
 
@@ -10,11 +10,7 @@ class Welcome extends Component {
       <div>
         <h1>Welcome!</h1>
         <div className="text-xs-right">
-        <div onClick= {(e) => {
-          login();
-          }
-        }
-         className='btn btn-primary'>Log In with Twitter</div>
+        <a href='/auth/twitter'>Log In with Twitter</a>
           <Link to="/groups" className="btn btn-primary">
             Login
           </Link>
