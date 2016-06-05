@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
+var findorcreate = require('mongoose-findorcreate');
+
 // var Schema = mongoose.Schema;
 
 // specify which db to use and where it is.
-// mongoose.connect('mongodb://localhost/twitterBot');
-mongoose.connect('mongodb://dev:dev@ds045684.mlab.com:45684/simplecrud');
+mongoose.connect('mongodb://localhost/twitterBot');
+// mongoose.connect('mongodb://dev:dev@ds045684.mlab.com:45684/simplecrud');
 
 var db = mongoose.connection;
 
@@ -65,6 +67,8 @@ var HashTagSchema = mongoose.Schema({
   },
   list: String,
 });
+
+UserSchema.plugin(findorcreate);
 
 
 var Target = mongoose.model('target', TargetSchema);
@@ -163,6 +167,7 @@ helpers.handlePut = function(model, payload, callback) {
 
 console.log('db is feeling good');
 module.exports = {
+  User:User,
   Target: Target,
   Message: Message,
   HashTag: HashTag,

@@ -10,10 +10,9 @@
   },
   "author": "raphael baskerville",
   "license": "ISC",
-  "devDependencies": {
-    
-  },
+  "devDependencies": {},
   "dependencies": {
+    "auth0-lock": "^9.2.1",
     "babel-core": "^6.2.1",
     "babel-loader": "^6.2.0",
     "babel-preset-es2015": "^6.1.18",
@@ -22,14 +21,20 @@
     "body-parser": "^1.15.0",
     "chai": "^3.5.0",
     "chai-jquery": "^2.0.0",
+    "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
     "jquery": "^2.2.1",
     "jsdom": "^8.1.0",
+    "jsonwebtoken": "^7.0.0",
     "lodash": "^3.10.1",
     "mocha": "^2.4.5",
     "mongoose": "^4.4.7",
+    "mongoose-findorcreate": "^0.1.2",
     "morgan": "^1.7.0",
     "node-schedule": "^1.1.0",
+    "passport": "^0.3.2",
+    "passport-twitter": "^1.0.4",
     "react": "^0.14.3",
     "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.3",
@@ -42,9 +47,9 @@
     "redux-thunk": "^2.1.0",
     "socket.io": "^1.4.5",
     "twitter": "^1.2.5",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.10.0",
     "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.14.0"
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-dev-server": "^1.14.0",
+    "webpack-hot-middleware": "^2.10.0"
   }
 }

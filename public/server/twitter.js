@@ -1,5 +1,5 @@
 var Twitter = require('twitter');
-var twitterKeys = require('./../twitterKeys.js');
+var twitterKeys = require('./twitterKeys.js');
 var tweetLimit = 5;
 var tweetTimeout = 3600000;
 var likeLimit = 1;
