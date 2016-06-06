@@ -20,9 +20,27 @@ passport.use(new TwitterStrategy({
     callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, cb) {
-    db.User.findOrCreate({ twitterId: profile.id }, function (err, user) {
-      return cb(err, user);
+    //if the user exists
+    db.User.find({ twitterId: profile.id }, function (err, data) {
+      console.log('passport attempting to authorize');
+      console.log('err: ',err);
+      if (data[0]) {
+        console.log('exsisting user');
+        console.log('data: ', data[0]);
+      } else {
+        console.log('new user');
+        new User({ twitterId:profile.id}).save();
+      }
     });
+
+
+
+
+
+    // db.User.findOrCreate({ twitterId: profile.id }, function (err, user) {
+    //   console.log('DB serching for: ', profile.id, 'found: ', user);
+    //   return cb(err, user);
+    // });
   }
 ));
 
@@ -61,6 +79,11 @@ passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 
+// serve login page at '/'
+app.get('/', function (err,res){
+  res.sendFile(path.join(__dirname, '../../login.html'));
+});
+
 //subrouters
 // app.use('/', require('./routers/test.js'));
 app.get('/auth/twitter',
@@ -70,20 +93,18 @@ app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { failureRedirect: '/login' }),
   function(req, res) {
     console.log('TWITTER AUTH CALLBACK');
-    console.log('user: ',req.user);
 
     var token = jwt.sign(req.user, 'superSecret');
 
     // return the information including token as JSON
-    res.json({
-      success: true,
-      message: 'Enjoy your token!',
-      token: token
-    });
-    
-    // req.session.accessToken = token;
+    // res.json({
+    //   success: true,
+    //   message: 'Enjoy your token!',
+    //   token: token
+    // });
+    req.session.accessToken = token;
     // Successful authentication, redirect home.
-    // res.redirect('/');
+    res.redirect('/home');
   });
 
 
@@ -125,7 +146,7 @@ app.get('/auth/twitter/callback',
 // app.use('/api', authApiRoutes);
 
 app.use('/api', require('./routers/apiRoutes.js'));
-app.get('/', function (err,res){
+app.get('/home', function (err,res){
   res.sendFile(path.join(__dirname, '../../index.html'));
 });
 console.log('NODE PROCESS', process.env.NODE_ENV);

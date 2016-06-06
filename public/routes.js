@@ -10,7 +10,7 @@ import CreateGroup from './containers/forms/new_group_form';
 
 
 export default (
-    <Route path="/" component={App}>
+    <Route path="/home/" component={App}>
       <IndexRoute component={Welcome} />
       <Route path="groups" component={GroupView}>
         <IndexRoute component={GroupDetail} />

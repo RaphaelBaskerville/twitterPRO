@@ -4,26 +4,27 @@ var findorcreate = require('mongoose-findorcreate');
 // var Schema = mongoose.Schema;
 
 // specify which db to use and where it is.
-mongoose.connect('mongodb://localhost/twitterBot');
-// mongoose.connect('mongodb://dev:dev@ds045684.mlab.com:45684/simplecrud');
+// mongoose.connect('mongodb://localhost/twitterBot');
+mongoose.connect('mongodb://dev:dev@ds045684.mlab.com:45684/simplecrud');
 
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, "Connected error"));
 
 db.once('open', function() {
-  console.log("we're connected port:3000");
+  console.log("Database connected");
+  User.find({}).then(function (data) {
+  console.log('users in this db',data);
+});
 });
 
 var UserSchema = mongoose.Schema({
-  username: {
+  twitterId: {
     type: String,
     index: {
       unique: true
     }
   },
-  password: String,
-  twitterId: String,
   admin: Number,
 });
 
@@ -164,6 +165,9 @@ helpers.handlePut = function(model, payload, callback) {
     }
   });
 };
+
+
+
 
 console.log('db is feeling good');
 module.exports = {
