@@ -32,16 +32,17 @@ class GroupList extends Component {
       <h2>Group List: </h2>
       select below
       {this.renderList()}
-      <Link to="groups/create" className="btn btn-primary">New Group</Link>
+      <Link to="groups/new" className="btn btn-primary">New Group</Link>
       </ul>
     )
   }
 }
 
 function mapStateToProps (state) {
-  console.log('state in map state.groups to props function\n', state)
+  console.log('GroupList STATE\n', state)
   return {
-    groups: state.models.list
+    groups: state.models.list,
+    user:state.user
   }
 }
 

@@ -20,11 +20,10 @@ class Welcome extends Component {
         let token = window.location.search.substr(1);
         let user = jwtDecode(token)._doc;
         console.log("user",user);
-        window.localStorage.token = token;
-        window.localStorage.user = user;
+        window.localStorage.setItem('id_token', token);
         user.id_token = token;
         if (user) {
-          receiveLogin(user);
+          this.props.receiveLogin(user);
           browserHistory.push('/groups');
         }
       } catch(err) {
@@ -34,9 +33,9 @@ class Welcome extends Component {
   }
 
   logout(){
-    window.localStorage.token='';
+    window.localStorage.removeItem('id_token');
     fetch('/logout').then(function(){
-      console.log('loggedout user\n', window.localStorage.token);
+      console.log('loggedout user\n', window.localStorage);
     });
   }
 
@@ -61,7 +60,7 @@ function mapStateToProps (state) {
   }
 }
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ receiveLogin }, dispatch);
+  return bindActionCreators({ receiveLogin:receiveLogin }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Welcome);
