@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
   next();
 });
   // body parsers
-app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
   //logger
 app.use(morgan('dev'));
@@ -50,14 +50,11 @@ passport.use(new TwitterStrategy({
   },
   function(token, tokenSecret, profile, cb) {
     //find the user
-    console.log('passport returns:\n', 'token', token, 'tokenSecret',tokenSecret, 'profile',profile)
     db.User.find({ twitterId: profile.id }, function (err, data) {
       console.log('passport attempting to authorize');
-      console.log('err: ',err);
       //if the user does exist
       if (data[0]) {
         console.log('exsisting user');
-        console.log('data: ', data[0]);
         // return the callback with existing user
         return cb(err, data[0]);  
         // otherwise make a new user and return the callback with the new user        
@@ -113,11 +110,19 @@ app.get('/auth/twitter/callback',
     //   message: 'Enjoy your token!',
     //   token: token
     // });
-    res.set({token: token})
+    console.log('jwt token created', token);
+    // res.set({token: token, user: req.user});
     // Successful authentication, redirect home.
     res.redirect('/?'+token);
   });
 
+app.get('/logout', function(req,res){
+  console.log('logging out');
+  req.logout();
+  req.session.destroy(function(){
+    res.send();
+  });
+});
 
 // var authApiRoutes = express.Router();
 

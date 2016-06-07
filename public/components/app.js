@@ -3,20 +3,28 @@ import { Component } from 'react';
 import { Link } from 'react-router';
 
 import TargetList from '../containers/targets';
+import loginActions from '../actions/login';
+import jwtDecode from 'jwt-decode';
 
 export default class App extends Component {
 
   componentWillMount() {
-    let query = this.props.location.search;
-    if (!window.localStorage.token && query.length > 0) {
-      console.log('saving query');
-      window.localStorage.token = this.props.location.search;
-    }
+    // console.log('component will mount');
+    // console.log(window.localStorage);
+    // let query = window.localStorage.token;
+    // console.log('saving query', query);
+    // let data = jwtDecode(query);
+    // console.log('the decoded token', data._doc);
+
+    // fetch('/getUserFromJWT/'+query.substr(), {method: 'POST'})
+    // .then(function (user) {
+    //   console.log('fetched user from jwt', user);
+    //   loginActions.receiveLogin(user);
+    // });
+    
   }
 
   render () {
-    console.log('App window location url', this.props.location.search);
-    console.log('App localstorage twitter', window.localStorage.twitter);
     return (
        <div>
           <h1>TwiDerpRo</h1>

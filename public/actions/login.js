@@ -15,7 +15,8 @@ function requestLogin(creds) {
   };
 }
 
-function receiveLogin(user) {
+export function receiveLogin(user) {
+  console.log('LOGIN_SUCCESS');
   return {
     type: LOGIN_SUCCESS,
     isFetching: false,
