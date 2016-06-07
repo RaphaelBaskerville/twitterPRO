@@ -8,7 +8,8 @@ import { Link } from 'react-router';
 
 class GroupList extends Component {
   componentDidMount(){
-    this.props.getModel('list', '/all/true', 'NEW_MODELS');
+    let user = window.localStorage.getItem('username');
+    this.props.getModel('list', '/user/'+user, 'NEW_MODELS');
   }
   renderList () {
     console.log('props in GroupList', this.props);

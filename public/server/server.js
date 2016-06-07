@@ -5,10 +5,6 @@ var schedule = require('node-schedule');
 var path = require('path');
 var passport = require('passport');
 var TwitterStrategy  = require('passport-twitter').Strategy;
-// var TWITTER_CONSUMER_KEY = require('./twitterKeys.js').consumer_key;
-// var TWITTER_CONSUMER_SECRET = require('./twitterKeys.js').consumer_secret;
-var TWITTER_CONSUMER_KEY = process.env.CONSUMER_KEY;
-var TWITTER_CONSUMER_SECRET = process.env.CONSUMER_SECRET;
 var db = require('./db.js');
 var jwt = require('jsonwebtoken');
 // var tweetBot = require('./twitter.js');
@@ -43,6 +39,26 @@ app.use(require('cookie-parser')());
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true })); 
 
 
+if (process.env.NODE_ENV !== 'production') {
+  var TWITTER_CONSUMER_KEY = require('./twitterKeys.js').consumer_key;
+  var TWITTER_CONSUMER_SECRET = require('./twitterKeys.js').consumer_secret;
+  console.log('DEV MODE');
+  const webpack = require('webpack');
+  const webpackDevMiddleware = require('webpack-dev-middleware')
+  const webpackHotMiddleware = require('webpack-hot-middleware')
+  const config = require('../../webpack.dev.config.js')
+  const compiler = webpack(config)
+
+  app.use(webpackHotMiddleware(compiler));
+  app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }));
+} else {
+var TWITTER_CONSUMER_KEY = process.env.CONSUMER_KEY;
+var TWITTER_CONSUMER_SECRET = process.env.CONSUMER_SECRET;
+
+}
 //configure passport
 
 passport.use(new TwitterStrategy({
@@ -165,20 +181,6 @@ app.get('/logout', function(req,res){
 
 app.use('/api', require('./routers/apiRoutes.js'));
 console.log('NODE PROCESS', process.env.NODE_ENV);
-if (process.env.NODE_ENV !== 'production') {
-  console.log('DEV MODE');
-  const webpack = require('webpack');
-  const webpackDevMiddleware = require('webpack-dev-middleware')
-  const webpackHotMiddleware = require('webpack-hot-middleware')
-  const config = require('../../webpack.dev.config.js')
-  const compiler = webpack(config)
-
-  app.use(webpackHotMiddleware(compiler))
-  app.use(webpackDevMiddleware(compiler, {
-    noInfo: true,
-    publicPath: config.output.publicPath
-  }))
-}
 
 
 

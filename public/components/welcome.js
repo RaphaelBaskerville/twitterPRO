@@ -21,6 +21,7 @@ class Welcome extends Component {
         let user = jwtDecode(token)._doc;
         console.log("user",user);
         window.localStorage.setItem('id_token', token);
+        window.localStorage.setItem('username', user.username);
         user.id_token = token;
         if (user) {
           this.props.receiveLogin(user);
