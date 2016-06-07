@@ -2,14 +2,18 @@ import React, { Component }  from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getModel } from '../actions/model';
+import { getModel, removeGroup } from '../actions/model';
 import { selectGroup } from '../actions/selectGroup';
 import { Link } from 'react-router';
 
 class GroupList extends Component {
+  constructor(props) {
+    super(props);
+    this.removeGroup = removeGroup.bind(this);
+  }
   componentDidMount(){
     let user = window.localStorage.getItem('username');
-    this.props.getModel('list', '/user/'+user, 'NEW_MODELS');
+    this.props.getModel('list', '/user/'+ user, 'NEW_MODELS');
   }
   renderList () {
     console.log('props in GroupList', this.props);
@@ -22,7 +26,15 @@ class GroupList extends Component {
           } 
         }
         className='list-group-item' 
-      > { group.name } </li>
+      > { group.name } 
+      <span 
+        onClick={(e) => {
+          console.log('delete')
+          e.stopPropagation()
+          this.props.removeGroup(group)
+          }
+        }> delete</span>
+      </li>
       )
     })
   }
@@ -30,7 +42,7 @@ class GroupList extends Component {
   render () {
     console.log(this.props.groups);
     return (
-      <ul className="list-group col-sm-4 red">
+      <ul className="col-sm-4 red">
       <h2>Group List: </h2>
       select below
       {this.renderList()}
@@ -49,7 +61,7 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getModel: getModel, selectGroup: selectGroup }, dispatch);
+  return bindActionCreators({ getModel, removeGroup, selectGroup }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupList);

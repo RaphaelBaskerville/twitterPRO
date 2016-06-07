@@ -25,7 +25,7 @@ class TargetList extends Component {
               { target.handle }
             </Link>
           </li>
-        );
+        );    
       })
     }
   }
@@ -36,6 +36,7 @@ class TargetList extends Component {
       className="list-group col-sm-4">
       targets
       { this.renderList() }
+      <Link></Link>
       </ul>
     )
   }

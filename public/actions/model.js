@@ -15,6 +15,7 @@ export function createGroup(params) {
 
   console.log('user',username);
   console.log('in getModel', params);
+
   let url = '/api/models/list/' + params.name + '/' + username;
   console.log('url',url);
   return dispatch => {
@@ -29,6 +30,14 @@ export function createGroup(params) {
       .then(data => data.json())
       .then(json => dispatch(recModel(json, MODEL_CREATED, 'list')));
   }
+}
+export function removeGroup(props) {
+  console.log(props);
+  return dispatch => {
+    return dispatch({
+      type:'test'
+    });
+  };
 }
 
 

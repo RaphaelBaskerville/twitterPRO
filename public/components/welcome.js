@@ -46,9 +46,7 @@ class Welcome extends Component {
         <h1>Welcome!</h1>
         <div className="text-xs-right">
           <a href='/auth/twitter' className="btn btn-primary">Log In with Twitter</a>
-          <div to="/groups" className="btn btn-primary" onClick={this.logout}>
-            Log out
-          </div>
+          <Link to="/groups" className="btn btn-danger" onClick={this.logout}>Log out</Link>
         </div>
       </div>
     );
