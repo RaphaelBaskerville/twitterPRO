@@ -27,6 +27,7 @@ class GroupList extends Component {
   }
 
   render () {
+    console.log(this.props.groups);
     return (
       <ul className="list-group col-sm-4 red">
       <h2>Group List: </h2>

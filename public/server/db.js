@@ -26,7 +26,7 @@ var UserSchema = mongoose.Schema({
     }
   },
   admin: Number,
-  username: { type: String, index: { unique: true }}
+  username: { type: String, index: { unique: true } }
 });
 
 var ListSchema = mongoose.Schema({

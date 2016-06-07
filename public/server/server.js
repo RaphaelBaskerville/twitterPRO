@@ -5,11 +5,13 @@ var schedule = require('node-schedule');
 var path = require('path');
 var passport = require('passport');
 var TwitterStrategy  = require('passport-twitter').Strategy;
-var TWITTER_CONSUMER_KEY = require('./twitterKeys.js').consumer_key;
-var TWITTER_CONSUMER_SECRET = require('./twitterKeys.js').consumer_secret;
+// var TWITTER_CONSUMER_KEY = require('./twitterKeys.js').consumer_key;
+// var TWITTER_CONSUMER_SECRET = require('./twitterKeys.js').consumer_secret;
+var TWITTER_CONSUMER_KEY = PROCESS.ENV.CONSUMER_KEY;
+var TWITTER_CONSUMER_SECRET = PROCESS.ENV.CONSUMER_SECRET;
 var db = require('./db.js');
 var jwt = require('jsonwebtoken');
-var tweetBot = require('./twitter.js');
+// var tweetBot = require('./twitter.js');
 
 
 // server config

@@ -19,9 +19,10 @@ router.get('/models/:model/:key/:value', function(req, res, next) {
 
 });
 // create new model
-router.post('/models/:model', function(req, res, next) {
-  console.log('apiroutes: POST');
-  db.helpers.handlePost(req.params.model, req.body, function(results) {
+router.post('/models/:model/:name/:user', function(req, res, next) {
+  console.log('apiroutes: POST params', req.params);
+  console.log('apiroutes: POST session', req);
+  db.helpers.handlePost(req.params.model, {name:req.params.name, user:req.params.user}, function(results) {
     res.status(200).send(results);
     next();
   });

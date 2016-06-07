@@ -3,14 +3,21 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { reduxForm } from 'redux-form';
+import { createGroup } from '../../actions/model';
+
 
 class CreateGroup extends Component {
+  makeGroup(name){
+    this.props.createGroup(name, this.props.user.username)
+  }
+
   render() {
     
-    const { fields: {name}, handleSubmit } = this.props;
+    const { fields: {name, user}, handleSubmit } = this.props;
+    console.log('\nCreateGroup user',this.props.fields);
 
     return (
-      <form onSubmit={handleSubmit} className='col-sm-8 red'>
+      <form onSubmit={handleSubmit(this.props.createGroup)} className='col-sm-8 red'>
         <h3> Create a new group</h3>
         <div className="form-group">
           <label>Title</label>
@@ -26,4 +33,4 @@ class CreateGroup extends Component {
 export default reduxForm({
   form: 'GroupNewForm',
   fields: ['name']
-})(CreateGroup)
+}, function(state){return {user:state.user}}, { createGroup })(CreateGroup);
