@@ -9,10 +9,39 @@ var TWITTER_CONSUMER_KEY = require('./twitterKeys.js').consumer_key;
 var TWITTER_CONSUMER_SECRET = require('./twitterKeys.js').consumer_secret;
 var db = require('./db.js');
 var jwt = require('jsonwebtoken');
-
-
-// twitter bot 
 var tweetBot = require('./twitter.js');
+
+
+// server config
+/////////////////
+var port = process.env.PORT || 3000;
+var app = express();
+
+//server static files
+//////////////////////
+var staticPath = path.join(__dirname, '../');
+console.log('static path',staticPath);
+app.use(express.static(staticPath));
+
+// middleware
+//////////////
+  //headers
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+  // body parsers
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(bodyParser.json());
+  //logger
+app.use(morgan('dev'));
+
+app.use(require('cookie-parser')());
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true })); 
+
+
+//configure passport
 
 passport.use(new TwitterStrategy({
     consumerKey: TWITTER_CONSUMER_KEY,
@@ -20,77 +49,59 @@ passport.use(new TwitterStrategy({
     callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, cb) {
-    //if the user exists
+    //find the user
+    console.log('passport returns:\n', 'token', token, 'tokenSecret',tokenSecret, 'profile',profile)
     db.User.find({ twitterId: profile.id }, function (err, data) {
       console.log('passport attempting to authorize');
       console.log('err: ',err);
+      //if the user does exist
       if (data[0]) {
         console.log('exsisting user');
         console.log('data: ', data[0]);
+        // return the callback with existing user
+        return cb(err, data[0]);  
+        // otherwise make a new user and return the callback with the new user        
       } else {
-        console.log('new user');
-        new User({ twitterId:profile.id}).save();
+        new db.User({ twitterId:profile.id, username:profile.username, admin: false }).save(function(err, user){
+          console.log('err', err);
+          console.log('NEW USER', user);
+          return cb(err, user);          
+        });
       }
     });
-
-
-
-
-
-    // db.User.findOrCreate({ twitterId: profile.id }, function (err, user) {
-    //   console.log('DB serching for: ', profile.id, 'found: ', user);
-    //   return cb(err, user);
-    // });
   }
 ));
 
-// database
-
-// server config
-var port = process.env.PORT || 3000;
-var app = express();
-
-// middleware
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-var staticPath = path.join(__dirname, '../');
-console.log('static path',staticPath);
-app.use(express.static(staticPath));
-// app.use(bodyParser.json());
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(require('cookie-parser')());
-app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true })); 
-
-app.use(morgan('dev'));
-
-//configure passport
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
-
 passport.deserializeUser(function(user, done) {
   done(null, user);
 });
 
 // serve login page at '/'
-app.get('/', function (err,res){
-  res.sendFile(path.join(__dirname, '../../login.html'));
+app.get('/', function (req,res){
+  console.log('get /');
+  res.sendFile(path.join(__dirname, '../../index.html'));
 });
 
-//subrouters
-// app.use('/', require('./routers/test.js'));
+// // main entry point after authenticated
+// app.get('/home', function (req,res){
+//   console.log('get /home');
+//   console.log('session',req.session);
+//   res.sendFile(path.join(__dirname, '../../index.html'));
+// });
+
+//ROUTES
+////////
 app.get('/auth/twitter',
   passport.authenticate('twitter'));
 
 app.get('/auth/twitter/callback', 
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  passport.authenticate('twitter', { failureRedirect: '/' }),
   function(req, res) {
     console.log('TWITTER AUTH CALLBACK');
 
@@ -102,9 +113,9 @@ app.get('/auth/twitter/callback',
     //   message: 'Enjoy your token!',
     //   token: token
     // });
-    req.session.accessToken = token;
+    res.set({token: token})
     // Successful authentication, redirect home.
-    res.redirect('/home');
+    res.redirect('/?'+token);
   });
 
 
@@ -146,9 +157,6 @@ app.get('/auth/twitter/callback',
 // app.use('/api', authApiRoutes);
 
 app.use('/api', require('./routers/apiRoutes.js'));
-app.get('/home', function (err,res){
-  res.sendFile(path.join(__dirname, '../../index.html'));
-});
 console.log('NODE PROCESS', process.env.NODE_ENV);
 if (process.env.NODE_ENV !== 'production') {
   console.log('DEV MODE');

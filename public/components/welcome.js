@@ -12,6 +12,9 @@ class Welcome extends Component {
         <h1>Welcome!</h1>
         <div className="text-xs-right">
         <a href='/auth/twitter'>Log In with Twitter</a>
+        <Link to="/groups" className="btn btn-primary">
+          Login
+        </Link>
         </div>
       </div>
     );
@@ -27,7 +30,3 @@ export default connect(null, mapDispatchToProps)(Welcome);
 
 
 
-
-          // <Link to="/groups" className="btn btn-primary">
-          //   Login
-          // </Link>
