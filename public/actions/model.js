@@ -6,7 +6,14 @@ export function getModel(type, options, action) {
           .then(json => dispatch(recModel(json, action, type)));
   };
 }
- 
+export function postModel(type,options,action, payload) {
+  return dispatch => {
+    console.log('in getModel', type, action);
+    return fetch('//localhost:3000/api/models/'+ type + options, {method:'POST', body:payload})
+          .then(data => data.json())
+          .then(json => dispatch(recModel(json, action, type)));
+  }; 
+}
 
 
 function recModel (data, action, type) {
