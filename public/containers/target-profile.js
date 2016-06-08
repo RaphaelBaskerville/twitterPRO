@@ -10,20 +10,22 @@ class TargetProfile extends Component {
     this.props.getTwitterObj(this.props.params.id);
   }
   render() {
-  console.log('TARGETPROFILE props:', this.props)
+    const { activeTarget } = this.props;
+    console.log('TARGETPROFILE props:', activeTarget);
     return(
-      <div>
-      { this.props.activeTarget ? 
+      <div className="target-profile">
+      { activeTarget ? 
         <div>
-          <img src={this.props.activeTarget.profile_image_url} />
-          <h3>Name: {this.props.activeTarget.name}</h3>
-          <div>Location: {this.props.activeTarget.location}</div> 
-          <div>status: {this.props.activeTarget.status.text}</div> 
+          <h1>
+            <img className="target-profile-img" src={activeTarget.profile_image_url} />
+             {activeTarget.name}
+          </h1>
+          <div className="target-profile-status">Status: {activeTarget.status.text}</div> 
+          {activeTarget.location ? <div className="target-profile-location">Location: {activeTarget.location}</div> : ''}
         </div>
           : this.props.params.id + 's profile goes here'
       }
-
-        <Link to='/groups' className='btn btn-danger'>Back</Link>
+        <Link to='/groups'>Back</Link>
       </div> 
     );
   }

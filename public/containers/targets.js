@@ -47,7 +47,6 @@ class TargetList extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log('state in TargetList\n', state)
   return {
     targets: state.models.target,
     activeGroup: state.activeGroup

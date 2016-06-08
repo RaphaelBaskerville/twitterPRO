@@ -7,7 +7,6 @@ export const TARGET_PROFILE_SELECTED = 'TARGET_PROFILE_SELECTED';
 
 export function getModel(type, options, action) {
   return dispatch => {
-    console.log('in getModel', type, action);
     return fetch('/api/models/'+ type + options)
           .then(data => data.json())
           .then(json => dispatch(recModel(json, action, type)));
@@ -33,6 +32,7 @@ export function getTwitterObj(handle) {
       .then(json => dispatch(recModel(json, TARGET_PROFILE_SELECTED, 'targetprofile')));
   };
 }
+// POST a model
 export function createModel(params, payload, type) {
   let url = '/api/models/' + type;
   let myHeaders = new Headers();
@@ -56,19 +56,23 @@ export function createModel(params, payload, type) {
       .then(json => dispatch(recModel(json, MODEL_CREATED, 'list')));
   };
 }
-
-export function removeGroup(props) {
-  console.log(props);
+// DELETE a model
+export function deleteModel(key,value,type) {
+  let myHeaders = new Headers();
+  myHeaders.append('Accept', 'application/json');
+  myHeaders.append('Content-Type', 'application/json');
   return dispatch => {
-    return dispatch({
-      type:'test'
+    return fetch('api/models/'+type + '/' + key + '/' + value, {
+      method: 'DELETE',
+      mode:'CORS',
+      cache: 'default',
+      headers: myHeaders,
     });
-  };
+  }
 }
 
+
 function recModel (data, action, modelType) {
-  console.log('recTargets called');
-  console.log('data',data,'action', action);
   return {
     type: action,
     payload: data,

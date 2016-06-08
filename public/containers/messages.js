@@ -43,7 +43,6 @@ class MessagesList extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log('state in MessageList\n', state)
   return {
     messages: state.models.message,
     activeGroup: state.activeGroup

@@ -43,7 +43,6 @@ class MessagesList extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log('HashtagList state:\n', state)
   return {
     hashtags: state.models.hashtag,
     activeGroup: state.activeGroup

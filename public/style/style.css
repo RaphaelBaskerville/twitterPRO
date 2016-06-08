@@ -1,9 +1,17 @@
 .red {
-  background-color: grey;
+  /*background-color: grey;*/
 }
 .btn {
   margin:5px 5px 5px 0px;
 }
 .deletebtn {
   color: red;
+}
+.target-profile-img {
+  margin-right:15px;
+  height:100px;
+  width:100px;
+}
+.target-profile{
+  /*margin-top: 25px;*/
 }
