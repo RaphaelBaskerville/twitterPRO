@@ -10,6 +10,7 @@ import CreateTarget from './containers/forms/new_target_form';
 import CreateMessage from './containers/forms/new_message_form';
 import CreateHashtag from './containers/forms/new_hashtag_form';
 import {AuthenticatedComponent} from './containers/authContainer';
+import TargetProfile from './containers/target-profile.js';
 
 
 export default (
@@ -21,6 +22,7 @@ export default (
         <Route path="target/new" component={CreateTarget} />
         <Route path="hashtag/new" component={CreateHashtag} />
         <Route path="message/new" component={CreateMessage} />
+        <Route path="profile/:id" component={TargetProfile} />
       </Route>
     </Route>
 );

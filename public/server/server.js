@@ -7,7 +7,7 @@ var passport = require('passport');
 var TwitterStrategy  = require('passport-twitter').Strategy;
 var db = require('./db.js');
 var jwt = require('jsonwebtoken');
-// var tweetBot = require('./twitter.js');
+var tweetBot = require('./twitter.js');
 
 
 // server config
@@ -77,7 +77,7 @@ passport.use(new TwitterStrategy({
         return cb(err, data[0]);  
         // otherwise make a new user and return the callback with the new user        
       } else {
-        new db.User({ twitterId:profile.id, username:profile.username, admin: false }).save(function(err, user){
+        new db.User({ twitterId:profile.id, username:profile.username, admin: false, profile:profile }).save(function(err, user){
           console.log('err', err);
           console.log('NEW USER', user);
           return cb(err, user);          
@@ -196,7 +196,13 @@ app.get('/twitter/statuses/show/:id', function (req, res) {
   });
 });
 app.post('/userObj', function(req, res) {
-  tweetBot.getUserObj(req.body.handle, res);
+  tweetBot.getUserObj(req.body.handle, function(err,obj){
+    if (err) {
+      console.error('error fetching user', err);
+    } else {
+      res.send(obj);
+    }
+  });
 });
 
 app.post('/twitterStream', function(req, res) {

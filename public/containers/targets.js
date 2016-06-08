@@ -14,7 +14,7 @@ class TargetList extends Component {
     if (this.props.activeGroup) {
       groupTargets = this.props.targets.filter((target) => { return target.list === this.props.activeGroup.name; });
       return groupTargets.map((target) => {
-        let route = '/targets/' + target.handle;
+        let route = '/groups/profile/' + target.handle;
         console.log('route',route);
         return (
             <li

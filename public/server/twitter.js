@@ -11,16 +11,17 @@ var idStrings = {};
 var tweetBot = {};
 var twitterStream = {};
 // requests user data from twitter, takes a user ID or screenname??
-tweetBot.getUserObj = function(user, res) {
+tweetBot.getUserObj = function(user, callback) {
   twit.get('users/show', {
     screen_name: user
   }, function(err, obj) {
     if (err) {
       console.log("error in getUserObj");
       console.log(err);
+      callback(err);
     } else {
       console.log('returned twitter obj');
-      res.status(200).send(obj);
+      callback(null, obj);
     }
   });
 };

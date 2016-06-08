@@ -27,13 +27,14 @@ class GroupList extends Component {
         }
         className='list-group-item' 
       > { group.name } 
-      <span 
+      <span
+        className="pull-xs-right deletebtn" 
         onClick={(e) => {
           console.log('delete')
           e.stopPropagation()
           this.props.removeGroup(group)
           }
-        }> delete</span>
+        }> del</span>
       </li>
       )
     })
