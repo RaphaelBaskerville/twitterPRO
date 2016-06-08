@@ -12,7 +12,16 @@ class TargetProfile extends Component {
   render() {
   console.log('TARGETPROFILE props:', this.props)
     return(
-      <div>{this.props.activeTarget ? <img src={this.props.activeTarget.profile_image_url} /> : this.props.params.id + 's profile goes here'}
+      <div>
+      { this.props.activeTarget ? 
+        <div>
+          <img src={this.props.activeTarget.profile_image_url} />
+          <h3>Name: {this.props.activeTarget.name}</h3>
+          <div>Location: {this.props.activeTarget.location}</div> 
+          <div>status: {this.props.activeTarget.status.text}</div> 
+        </div>
+          : this.props.params.id + 's profile goes here'
+      }
 
         <Link to='/groups' className='btn btn-danger'>Back</Link>
       </div> 
