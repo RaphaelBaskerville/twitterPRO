@@ -5,38 +5,37 @@ import { Link } from 'react-router';
 import { reduxForm } from 'redux-form';
 import { createModel } from '../../actions/model';
 
-class CreateGroup extends Component {
-  // grab router method from context //DANGER//
+class CreateMessage extends Component {
   static contextTypes = {
     router: PropTypes.object
   };
 
   onSubmit(props) {
-    let payload = {
-      name: props.name,
-      user: window.localStorage.getItem('username')
-    };
+    console.log('onsubmit called with props: ', props);
+    let payload = {};
+    payload.list = this.props.activeGroup.name;
+    payload.text = props.text;
 
-    this.props.createModel(props, payload, 'list')
+    this.props.createModel(props, payload, 'message')
       .then(() => {
         this.context.router.push('/groups');
-      })
+      });
   }
 
   render() {
     
-    const { fields: {name}, handleSubmit } = this.props;
-    console.log('\nCreateGroup user',this.props.fields);
+    const { fields: {text}, handleSubmit } = this.props;
+    console.log('\nCreateTarget props',this.props);
 
     return (
       <div className='col-sm-8 red'>
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-        <h3> Create a new group</h3>
-        <div className={`form-group ${name.touched && name.invalid ? 'has-danger' : ''}`}>
-          <label>New Group</label>
-          <input type="text" className="form-control"  {...name} />
+        <h3> Create a new target</h3>
+        <div className={`form-group ${text.touched && text.invalid ? 'has-danger' : ''}`}>
+          <label>New Target</label>
+          <input type="text" className="form-control"  {...text} />
           <div classname='text-help'>
-          {name.touched ? name.error : ''}
+          {text.touched ? text.error : ''}
           </div>
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
@@ -50,14 +49,18 @@ class CreateGroup extends Component {
 function validate(values) {
   const errors ={};
 
-  if (!values.name) {
-    errors.name = 'Enter a name for your group'
+  if (!values.text) {
+    errors.text = 'Enter a name for your group'
   }
   return errors;
 };
 
 export default reduxForm({
-  form: 'GroupNewForm',
-  fields: ['name'],
+  form: 'TargetNewForm',
+  fields: ['text'],
   validate
-}, function(state){return {user:state.user}}, { createModel })(CreateGroup);
+}, function(state){return {user:state.user, activeGroup:state.activeGroup}}, { createModel })(CreateMessage);
+
+
+
+

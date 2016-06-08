@@ -9,13 +9,6 @@ export default function (state = {
       var updateObj = {};
       updateObj[action.modelType] = action.payload;
         return Object.assign({}, state, updateObj);
-     case 'MODEL_CREATED':
-     console.log('MODEL_CREATED');
-      var updatedCollection = [action.payload].concat(state.list);
-      console.log('\nnew models: ', updatedCollection);
-      let updateObj = {};
-      updateObj[action.modelType] = updatedCollection;
-        return Object.assign({}, state, updateObj);
      }
   return state;
 }

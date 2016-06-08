@@ -1,11 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db.js');
+var bodyParser = require('body-parser');
 
 
 ///////////////////////////////////
 /////////dbroutes//////////////////
 ///////////////////////////////////
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
+
 
 // fetch from db
 router.get('/models/:model/:key/:value', function(req, res, next) {
@@ -19,10 +23,11 @@ router.get('/models/:model/:key/:value', function(req, res, next) {
 
 });
 // create new model
-router.post('/models/:model/:name/:user', function(req, res, next) {
-  console.log('apiroutes: POST params', req.params);
-  console.log('apiroutes: POST session', req);
-  db.helpers.handlePost(req.params.model, {name:req.params.name, user:req.params.user}, function(results) {
+router.post('/models/:model', function(req, res, next) {
+  console.log('req.body',req.body);
+  // console.log('apiroutes: POST params', req.params);
+  // console.log('apiroutes: POST session', req);
+  db.helpers.handlePost(req.params.model, req.body, function(results) {
     res.status(200).send(results);
     next();
   });

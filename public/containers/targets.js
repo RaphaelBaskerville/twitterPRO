@@ -1,8 +1,7 @@
 import React, { Component }  from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
-
 import { getModel } from '../actions/model';
 
 class TargetList extends Component {
@@ -36,7 +35,7 @@ class TargetList extends Component {
       className="list-group col-sm-4">
       targets
       { this.renderList() }
-      <Link></Link>
+      <Link to='/groups/target/new' className="btn btn-primary">New Target</Link>
       </ul>
     )
   }

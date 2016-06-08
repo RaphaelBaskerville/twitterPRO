@@ -1,7 +1,8 @@
 import React, { Component }  from 'react';
-import { connect } from 'react-redux';
-import { getModel } from '../actions/model';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import { getModel } from '../actions/model';
 
 class MessagesList extends Component {
   componentDidMount(){
@@ -30,6 +31,7 @@ class MessagesList extends Component {
       className="list-group col-sm-3">
       hashtags
       { this.renderList() }
+      <Link to='/groups/hashtag/new' className="btn btn-primary">New hashtag</Link>
       </ul>
     )
   }
