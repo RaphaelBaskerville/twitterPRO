@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component, PropTypes }  from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -7,6 +7,9 @@ import { selectGroup } from '../actions/selectGroup';
 import { Link } from 'react-router';
 
 class GroupList extends Component {
+  static contextTypes = {
+    router: PropTypes.object
+  };
   constructor(props) {
     super(props);
     this.removeGroup = removeGroup.bind(this);
@@ -23,6 +26,7 @@ class GroupList extends Component {
         key={ group.name }
         onClick={ (e) => {
           this.props.selectGroup(group)
+          this.context.router.push('/groups')
           } 
         }
         className='list-group-item' 
@@ -34,7 +38,7 @@ class GroupList extends Component {
           e.stopPropagation()
           this.props.removeGroup(group)
           }
-        }> del</span>
+        }>del</span>
       </li>
       )
     })

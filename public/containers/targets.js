@@ -31,12 +31,17 @@ class TargetList extends Component {
 
   render () {
     return (
-      <ul 
-      className="list-group col-sm-4">
+      <div>
+      {this.props.activeGroup ?
+      <ul className="list-group col-sm-4">
       targets
       { this.renderList() }
+      <div></div>
       <Link to='/groups/target/new' className="btn btn-primary">New Target</Link>
       </ul>
+                             :
+      ''}
+      </div>
     )
   }
 }

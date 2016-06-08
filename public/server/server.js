@@ -9,13 +9,15 @@ var db = require('./db.js');
 var jwt = require('jsonwebtoken');
 var tweetBot = require('./twitter.js');
 
+var TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET;
+
 
 // server config
 /////////////////
 var port = process.env.PORT || 3000;
 var app = express();
 
-//server static files
+//serve static files
 //////////////////////
 var staticPath = path.join(__dirname, '../');
 console.log('static path',staticPath);
@@ -40,9 +42,10 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 
 
 if (process.env.NODE_ENV !== 'production') {
-  var TWITTER_CONSUMER_KEY = require('./twitterKeys.js').consumer_key;
-  var TWITTER_CONSUMER_SECRET = require('./twitterKeys.js').consumer_secret;
   console.log('DEV MODE');
+  TWITTER_CONSUMER_KEY = require('./twitterKeys.js').consumer_key;
+  TWITTER_CONSUMER_SECRET = require('./twitterKeys.js').consumer_secret;
+
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware')
   const webpackHotMiddleware = require('webpack-hot-middleware')
@@ -54,9 +57,10 @@ if (process.env.NODE_ENV !== 'production') {
     noInfo: true,
     publicPath: config.output.publicPath
   }));
+  
 } else {
-var TWITTER_CONSUMER_KEY = process.env.CONSUMER_KEY;
-var TWITTER_CONSUMER_SECRET = process.env.CONSUMER_SECRET;
+  TWITTER_CONSUMER_KEY = process.env.CONSUMER_KEY;
+  TWITTER_CONSUMER_SECRET = process.env.CONSUMER_SECRET;
 
 }
 //configure passport

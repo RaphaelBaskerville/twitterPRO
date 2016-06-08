@@ -10,7 +10,12 @@
   },
   "author": "raphael baskerville",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "webpack": "^1.12.9",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-dev-server": "^1.14.0",
+    "webpack-hot-middleware": "^2.10.0"
+  },
   "dependencies": {
     "auth0-lock": "^9.2.1",
     "babel-core": "^6.2.1",
@@ -49,10 +54,6 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.1.0",
     "socket.io": "^1.4.5",
-    "twitter": "^1.2.5",
-    "webpack": "^1.12.9",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-dev-server": "^1.14.0",
-    "webpack-hot-middleware": "^2.10.0"
+    "twitter": "^1.2.5"
   }
 }

@@ -27,12 +27,17 @@ class MessagesList extends Component {
 
   render () {
     return (
-      <ul 
-      className="list-group col-sm-5">
-      messages
-      { this.renderList() }
-      <Link to='/groups/message/new' className="btn btn-primary">New Message</Link>
-      </ul>
+      <div>
+        {this.props.activeGroup ?
+        <ul className="list-group col-sm-5">
+          messages
+          { this.renderList() }
+          <div></div>
+          <Link to='/groups/message/new' className="btn btn-primary">New Message</Link>
+        </ul>
+                                :
+        ''}                        
+      </div>
     )
   }
 }
