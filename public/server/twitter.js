@@ -1,15 +1,28 @@
-var Twitter = require('twitter');
-var twitterKeys = require('./twitterKeys.js');
-var tweetLimit = 5;
-var tweetTimeout = 3600000;
-var likeLimit = 1;
-var likeTimeout = 60000;
+var Twitter = require('twitter'),
+    twitterKeys,
+    tweetLimit = 5,
+    tweetTimeout = 3600000,
+    likeLimit = 1,
+    likeTimeout = 60000,
+    latestMentions = [],
+    idStrings = {},
+    tweetBot = {},
+    twitterStream = {};
+
+
+//create twitter connection
+if (process.env.NODE_ENV !== 'production') {
+  twitterKeys = require('./twitterKeys');
+} else {
+  twitterKeys = {
+    consumer_key: process.env.CONSUMER_KEY,
+    consumer_secret: process.env.CONSUMER_SECRET,
+    access_token_key: process.env.ACCESS_TOKEN_KEY,
+    access_token_secret: process.env.ACCESS_TOKEN_SECRET
+  };
+}
 var twit = new Twitter(twitterKeys);
 
-var latestMentions = [];
-var idStrings = {};
-var tweetBot = {};
-var twitterStream = {};
 // requests user data from twitter, takes a user ID or screenname??
 tweetBot.getUserObj = function(user, callback) {
   twit.get('users/show', {
