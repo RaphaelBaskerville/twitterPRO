@@ -1,12 +1,15 @@
+var path = require('path');
+
+
 module.exports = {
   devtool:'eval',
 
   entry: [
-    './public/index.js'
+    './public/index'
   ],
 
   output: {
-    path: __dirname,
+    path: path.join(__dirname, 'public'),
     publicPath: '/',
     filename: 'bundle.js'
   },
@@ -27,4 +30,3 @@ module.exports = {
     contentBase: './'
   }
 };
-  

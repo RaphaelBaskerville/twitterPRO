@@ -47,17 +47,17 @@ if (process.env.NODE_ENV !== 'production') {
   TWITTER_CONSUMER_SECRET = require('./twitterKeys.js').consumer_secret;
 
   const webpack = require('webpack');
-  const webpackDevMiddleware = require('webpack-dev-middleware')
-  const webpackHotMiddleware = require('webpack-hot-middleware')
-  const config = require('../../webpack.dev.config.js')
-  const compiler = webpack(config)
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  const webpackHotMiddleware = require('webpack-hot-middleware');
+  const config = require('../../webpack.dev.config.js');
+  const compiler = webpack(config);
 
   app.use(webpackHotMiddleware(compiler));
   app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
     publicPath: config.output.publicPath
   }));
-  
+
 } else {
   TWITTER_CONSUMER_KEY = process.env.CONSUMER_KEY;
   TWITTER_CONSUMER_SECRET = process.env.CONSUMER_SECRET;
