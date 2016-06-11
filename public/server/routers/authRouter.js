@@ -1,25 +1,39 @@
-'use strict';
-
 var express = require('express');
-var User = require('./../db/user.js');
-var TwitterKeys = require('../../twitterKeys.js');
+var router = express.Router();
+var jwt = require('jsonwebtoken');
 
-// JWT: token assignment
-var jwt = require('jwt');
-var assignToken = express.Router();
+router.use(function(req, res, next) {
+  console.log('auth router');
+ var token = req.body.token || req.query.token || req.headers['x-access-token'];
+// decode token
+if (token) {
 
-// third party login auth
-var passport = require('passport');
-var TwitterStrategy = require('passport-twitter');
+    // verifies secret and checks exp
+    jwt.verify(token, 'superSecret', function(err, decoded) {      
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;    
+        next();
+      }
+    });
 
-// password salt and hash
-var Bcrypt = require('bcrypt');
+  } else {
+    // if there is no token
+    // return an error
+    return res.status(403).send({ 
+      success: false, 
+      message: 'No token provided.' 
+    });
+    
+  }
+});
 
-//ENV
-// var env = require('node-env-file');
-// var env = require('__dirname' + '/../.env');
+module.exports = router;
 
-// exporting handlers
 
-module.exports = assignToken;
+
+
+
 

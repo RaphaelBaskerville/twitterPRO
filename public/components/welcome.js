@@ -4,41 +4,45 @@ import {bindActionCreators} from 'redux';
 import { Link } from 'react-router';
 import jwtDecode from 'jwt-decode';
 import {browserHistory} from 'react-router';
-import {receiveLogin} from '../actions/login';
+import {getTwitterObjForUserProfile} from '../actions/model';
+import { receiveLogin } from '../actions/login';
+import axios from 'axios';
 
 
 
 class Welcome extends Component {
 
-   componentWillMount() {
+  componentDidMount() {
     console.log('WELCOME will mount\n------------------');
-    console.log('TOKEN: ',window.localStorage.token);
+    console.log('saved token', window.localStorage.getItem('id_token'));
+    console.log('queryStr: ', window.location.search.substr(1));
     console.log('location: ',window.location);
-    console.log('context', this);
-    
+    console.log('isAUTH?', this.props.isAuthenticated);
+    if(!this.props.isAuthenticated) {
+      console.log('user is not authenticated');
+      let token = window.location.search.substr(1) || window.localStorage.getItem('id_token');
+      console.log('FINAL TOKEN: ', token);
       try {
-        let token = window.location.search.substr(1);
         let user = jwtDecode(token)._doc;
-        console.log("user",user);
+        console.log("jwtdecode decoded: ", user);
         window.localStorage.setItem('id_token', token);
         window.localStorage.setItem('username', user.username);
         user.id_token = token;
-        if (user) {
-          this.props.receiveLogin(user);
-          browserHistory.push('/groups');
-        }
-      } catch(err) {
-        console.log('user not logged in', err);
+
+        this.props.getTwitterObjForUserProfile(user.username)
+          .then(function(data){
+            console.log('users_profile', data);
+            browserHistory.push('/groups');
+          });
+      } catch (err) {
+        console.log(err);
       }
-    
+    } else {
+      console.log('\n\nuser is authenticated already\n\n');
+      browserHistory.push('/groups');
+    }
   }
 
-  logout(){
-    window.localStorage.removeItem('id_token');
-    fetch('/logout').then(function(){
-      console.log('loggedout user\n', window.localStorage);
-    });
-  }
 
   render () {
     return (
@@ -46,7 +50,6 @@ class Welcome extends Component {
         <h1>Welcome!</h1>
         <div className="text-xs-right">
           <a href='/auth/twitter' className="btn btn-primary">Log In with Twitter</a>
-          <Link to="/groups" className="btn btn-danger" onClick={this.logout}>Log out</Link>
         </div>
       </div>
     );
@@ -55,11 +58,12 @@ class Welcome extends Component {
 
 function mapStateToProps (state) {
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    isAuthenticated:state.isAuthenticated
   }
 }
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ receiveLogin:receiveLogin }, dispatch);
+  return bindActionCreators({ getTwitterObjForUserProfile, receiveLogin }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Welcome);

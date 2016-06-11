@@ -1,12 +1,12 @@
-// actions.js
+import axios from 'axios'
 
-// There are three possible states for our login
-// process and we need actions for each of them
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
-function requestLogin(creds) {
+export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
+
+export function requestLogin(creds) {
   return {
     type: LOGIN_REQUEST,
     isFetching: true,
@@ -15,18 +15,15 @@ function requestLogin(creds) {
   };
 }
 
-export function receiveLogin(user) {
-  console.log('LOGIN_SUCCESS');
+export function receiveLogin() {
+  console.log(LOGIN_SUCCESS);
+
   return {
-    type: LOGIN_SUCCESS,
-    isFetching: false,
-    isAuthenticated: true,
-    id_token: user.id_token,
-    user:user
+    type: LOGIN_SUCCESS
   };
 }
 
-function loginError(message) {
+export function loginError(message) {
   return {
     type: LOGIN_FAILURE,
     isFetching: false,

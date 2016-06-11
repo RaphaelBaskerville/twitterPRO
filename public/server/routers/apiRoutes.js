@@ -3,13 +3,11 @@ var router = express.Router();
 var db = require('../db.js');
 var bodyParser = require('body-parser');
 
-
 ///////////////////////////////////
 /////////dbroutes//////////////////
 ///////////////////////////////////
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
-
 
 // fetch from db
 router.get('/models/:model/:key/:value', function(req, res, next) {
@@ -20,8 +18,10 @@ router.get('/models/:model/:key/:value', function(req, res, next) {
     res.status(200).send(results);
     next();
   });
-
 });
+
+router.get('/twitter');
+
 // create new model
 router.post('/models/:model', function(req, res, next) {
   console.log('req.body',req.body);

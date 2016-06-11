@@ -1,16 +1,17 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
-var schedule = require('node-schedule');
 var path = require('path');
+var schedule = require('node-schedule');
+
 var passport = require('passport');
 var TwitterStrategy  = require('passport-twitter').Strategy;
-var db = require('./db.js');
 var jwt = require('jsonwebtoken');
+
+var db = require('./db.js');
 var tweetBot = require('./twitter.js');
 
 var TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET;
-
 
 // server config
 /////////////////
@@ -71,6 +72,7 @@ passport.use(new TwitterStrategy({
     callbackURL: "/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, cb) {
+    console.log(profile);
     //find the user
     db.User.find({ twitterId: profile.id }, function (err, data) {
       console.log('passport attempting to authorize');
@@ -183,10 +185,9 @@ app.get('/logout', function(req,res){
 // // apply the routes to our application with the prefix /api
 // app.use('/api', authApiRoutes);
 
+app.use('/api', require('./routers/authRouter.js'));
 app.use('/api', require('./routers/apiRoutes.js'));
 console.log('NODE PROCESS', process.env.NODE_ENV);
-
-
 
 //
 // twitter
@@ -214,6 +215,12 @@ app.post('/twitterStream', function(req, res) {
   tweetBot.changeStream(io, req.body);
   res.status(200).send('SERVER: changed stream');
 });
+
+//all other routes send to react-router
+app.get('*', function (req, res){
+  console.log('path', path.join(__dirname, '../../', 'index.html'));
+  res.sendFile(path.join(__dirname, '../../', 'index.html'));
+})
 
 
 //TODO: this is terrible need to fix.

@@ -26,7 +26,8 @@ var UserSchema = mongoose.Schema({
     }
   },
   admin: Number,
-  username: { type: String, index: { unique: true } }
+  username: { type: String, index: { unique: true } },
+  imageUrl: String
 });
 
 var ListSchema = mongoose.Schema({
@@ -48,6 +49,7 @@ var TargetSchema = mongoose.Schema({
   },
   interval: String,
   list: String,
+  imageUrl: String,
 });
 
 var MessageSchema = mongoose.Schema({

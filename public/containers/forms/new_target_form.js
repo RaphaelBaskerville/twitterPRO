@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { reduxForm } from 'redux-form';
-import { createModel } from '../../actions/model';
+import { postModel, getTwitterObj } from '../../actions/model';
 
 class CreateTarget extends Component {
   static contextTypes = {
@@ -11,16 +11,22 @@ class CreateTarget extends Component {
   };
 
   onSubmit(props) {
-    console.log('onsubmit called with props: ', props);
-    let payload = {};
-    payload.list = this.props.activeGroup.name;
-    payload.handle = props.handle;
-    payload.interval = '*****';
-
-    this.props.createModel(props, payload, 'target')
-      .then(() => {
+    let payload = {
+      handle:props.handle,
+      list:this.props.activeGroup.name,
+      interval:'*****',
+    };
+    this.props.getTwitterObj(props.handle)
+      .then((twitterdata) => {
+        console.log('twitterData', twitterdata.payload.data.profile_image_url);
+        payload.imageUrl = twitterdata.payload.data.profile_image_url;
+        return this.props.postModel('target', payload);
+      })
+      .then((data) => {
+        console.log('new target saved', data);
         this.context.router.push('/groups');
-      });
+    });
+    console.log('onsubmit called with props: ', props);
   }
 
   render() {
@@ -60,4 +66,4 @@ export default reduxForm({
   form: 'TargetNewForm',
   fields: ['handle'],
   validate
-}, function(state){return {user:state.user, activeGroup:state.activeGroup}}, { createModel })(CreateTarget);
+}, function(state){return {user:state.user, activeGroup:state.activeGroup}}, { postModel, getTwitterObj })(CreateTarget);

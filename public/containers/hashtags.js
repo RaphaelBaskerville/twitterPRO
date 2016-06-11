@@ -44,7 +44,7 @@ class MessagesList extends Component {
 
 function mapStateToProps (state) {
   return {
-    hashtags: state.models.hashtag,
+    hashtags: state.models.__HASHTAGS,
     activeGroup: state.activeGroup
   }
 }

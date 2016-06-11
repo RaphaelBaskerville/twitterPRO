@@ -44,7 +44,7 @@ class MessagesList extends Component {
 
 function mapStateToProps (state) {
   return {
-    messages: state.models.message,
+    messages: state.models.__MESSAGES,
     activeGroup: state.activeGroup
   }
 }

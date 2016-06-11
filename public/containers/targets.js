@@ -2,15 +2,17 @@ import React, { Component }  from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getModel } from '../actions/model';
+import { getModel, getTwitterObj } from '../actions/model';
 
 class TargetList extends Component {
   componentDidMount(){
-    this.props.getModel('target', '/all/true', 'NEW_MODELS');
+    this.props.getModel('target', '/all/true');
+
   }
 
   renderList () {
     var groupTargets;
+    console.log('PROPS:', this.props);
     if (this.props.activeGroup) {
       groupTargets = this.props.targets.filter((target) => { return target.list === this.props.activeGroup.name; });
       return groupTargets.map((target) => {
@@ -19,7 +21,8 @@ class TargetList extends Component {
         return (
             <li
             className='list-group-item' 
-            key={ target.handle }> 
+            key={ target.handle }>
+            <image src={target.imageUrl} />
             <Link to={ route }>
               { target.handle }
             </Link>
@@ -48,13 +51,13 @@ class TargetList extends Component {
 
 function mapStateToProps (state) {
   return {
-    targets: state.models.target,
+    targets: state.models.__TARGETS,
     activeGroup: state.activeGroup
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getModel: getModel }, dispatch);
+  return bindActionCreators({ getModel, getTwitterObj }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TargetList);

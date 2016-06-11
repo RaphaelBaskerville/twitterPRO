@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Link} from 'react-router';
 import { getTwitterObj } from '../actions/model';
+import { selectTarget } from '../actions/selectTarget';
 
 
 class TargetProfile extends Component {
   componentWillMount(){
+    this.props.selectTarget(this.props.params.id);
     this.props.getTwitterObj(this.props.params.id);
   }
   render() {
@@ -20,7 +22,7 @@ class TargetProfile extends Component {
             <img className="target-profile-img" src={activeTarget.profile_image_url} />
              {activeTarget.name}
           </h1>
-          <div className="target-profile-status">Status: {activeTarget.status.text}</div> 
+          { activeTarget.status ? <div className="target-profile-status">Status: {activeTarget.status.text}</div> : '' }
           {activeTarget.location ? <div className="target-profile-location">Location: {activeTarget.location}</div> : ''}
         </div>
           : this.props.params.id + 's profile goes here'
@@ -35,4 +37,4 @@ function mapStateToProps(state) {
   return {activeTarget:state.activeTarget}
 }
 
-export default connect(mapStateToProps, { getTwitterObj })(TargetProfile);
+export default connect(mapStateToProps, { getTwitterObj, selectTarget })(TargetProfile);

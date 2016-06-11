@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { reduxForm } from 'redux-form';
-import { createModel } from '../../actions/model';
+import { postModel } from '../../actions/model';
 
 class CreateHashtag extends Component {
   static contextTypes = {
@@ -16,7 +16,7 @@ class CreateHashtag extends Component {
     payload.list = this.props.activeGroup.name;
     payload.text = props.text;
 
-    this.props.createModel(props, payload, 'hashtag')
+    this.props.postModel(props, payload, 'hashtag')
       .then(() => {
         this.context.router.push('/groups');
       });
@@ -59,7 +59,7 @@ export default reduxForm({
   form: 'TargetNewForm',
   fields: ['text'],
   validate
-}, function(state){return {user:state.user, activeGroup:state.activeGroup}}, { createModel })(CreateHashtag);
+}, function(state){return {user:state.user, activeGroup:state.activeGroup}}, { postModel })(CreateHashtag);
 
 
 
