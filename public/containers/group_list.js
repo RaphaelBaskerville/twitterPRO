@@ -16,30 +16,31 @@ class GroupList extends Component {
     this.props.getModel('list', '/user/'+ user);
   }
 
-  onDeleteClick(props) {
-    console.log('on DeleteClick props',arguments)
-    console.log('on DeleteClick this',this)
-    this.props.deleteModel('name',group.name,'list')
-      .then( browserHistory.push('/groups') );
+  onDeleteClick(group) {
+    if (confirm('are you sure you want to delete ' + group.name + '?')) {
+      this.props.deleteModel('name', group.name, 'list')
+        .then(() => {
+          this.props.getModel('list', '/user/'+ window.localStorage.getItem('username'));
+        });
+    }
+  }
+
+  onSelectClick(group){
+    this.props.selectGroup(group);
   }
 
   renderList () {
-    console.log('props in GroupList', this.props);
     return this.props.groups.map((group) => {
       return (
           <li
           key={ group.name }
           className='list-group-item'>
-            <span onClick={ (e) => { 
-              this.props.selectGroup(group) 
-              this.context.router.push('/groups') 
-              } 
-            }>
+            <span onClick={ this.onSelectClick.bind(this, group) }>
             { group.name } 
             </span>
             <span
             className="pull-xs-right deletebtn" 
-            onClick={this.onDeleteClick.bind(this)}>
+            onClick={ this.onDeleteClick.bind(this, group) }>
             del</span>
           </li>
       )
@@ -47,10 +48,9 @@ class GroupList extends Component {
   }
 
   render () {
-    console.log('groupList props: ',this.props);
     return (
       <div>
-      {this.props.isAuthenticated &&
+      { this.props.isAuthenticated &&
         <ul className="col-sm-4 red">
         <h2>Group List: </h2>
         select below
@@ -68,7 +68,6 @@ class GroupList extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log('state: ', state)
   return {
     groups: state.models.__LISTS,
     user:state.user,

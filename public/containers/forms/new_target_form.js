@@ -14,7 +14,7 @@ class CreateTarget extends Component {
     let payload = {
       handle:props.handle,
       list:this.props.activeGroup.name,
-      interval:'*****',
+      interval:'*/1 * * * *',
     };
     this.props.getTwitterObj(props.handle)
       .then((twitterdata) => {

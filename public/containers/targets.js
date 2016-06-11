@@ -12,12 +12,10 @@ class TargetList extends Component {
 
   renderList () {
     var groupTargets;
-    console.log('PROPS:', this.props);
     if (this.props.activeGroup) {
       groupTargets = this.props.targets.filter((target) => { return target.list === this.props.activeGroup.name; });
       return groupTargets.map((target) => {
         let route = '/groups/profile/' + target.handle;
-        console.log('route',route);
         return (
             <li
             className='list-group-item' 

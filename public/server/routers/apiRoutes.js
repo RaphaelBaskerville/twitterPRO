@@ -16,7 +16,7 @@ router.get('/models/:model/:key/:value', function(req, res, next) {
   searchObject[req.params.key] = req.params.value;
   db.helpers.handleGet(req.params.model, searchObject, function(results) {
     res.status(200).send(results);
-    next();
+    // next();
   });
 });
 
@@ -29,7 +29,7 @@ router.post('/models/:model', function(req, res, next) {
   // console.log('apiroutes: POST session', req);
   db.helpers.handlePost(req.params.model, req.body, function(results) {
     res.status(200).send(results);
-    next();
+    // next();
   });
 });
 // delete a model
@@ -40,7 +40,7 @@ router.delete('/models/:model/:key/:value', function(req, res, next) {
 
   db.helpers.handleDelete(req.params.model, searchObject, function(results) {
     res.status(200).send(results);
-    next();
+    // next();
   });
 });
 // change a model
@@ -48,7 +48,7 @@ router.put('/models/:model', function(req, res, next) {
   console.log('apiroutes: PUT');
   db.helpers.handlePut(req.params.model, req.body, function(results) {
     res.status(200).send(results);
-    next();
+    // next();
   });
 });
 

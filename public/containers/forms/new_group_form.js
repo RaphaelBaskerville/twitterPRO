@@ -19,7 +19,7 @@ class CreateGroup extends Component {
 
     this.props.postModel('list', payload)
       .then(() => {
-        this.context.router.push('/groups');
+        this.context.router.push('/');
       })
   }
 

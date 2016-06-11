@@ -15,12 +15,10 @@ export const GET_TWITTER_OBJ = 'GET TWITTER_OBJ';
 export const GET_TWITTER_OBJ_FOR_PROFILE = 'GET TWITTER_OBJ_FOR_PROFILE';
 
 export function getModel (type, options) {
-  console.log('GETMODEL: ',type);
   let request = axios.get('/api/models/'+ type + options + '?token=' + window.localStorage.id_token);
   let actionType;
   switch(type){
     case 'list':
-      console.log('case: list');
       actionType = __LISTS;
       break;
     case 'target':
@@ -33,7 +31,6 @@ export function getModel (type, options) {
       actionType = __HASHTAGS;
       break;
   }
-  console.log('GETMODEL:', actionType);
   return {
     type:actionType,
     payload:request
@@ -41,6 +38,7 @@ export function getModel (type, options) {
 }
 
 export function deleteModel (key, value, type) {
+  console.log('deleting model', type, value);
   let request = axios.delete('api/models/'+type + '/' + key + '/' + value + '?token=' + window.localStorage.id_token, {});
   return {
     type:MODEL_DELETED,

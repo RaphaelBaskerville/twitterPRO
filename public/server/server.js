@@ -262,7 +262,7 @@ var autoTweet = function() {
             message = randomElement(messages).text + ' #' + randomElement(hashtags).text;
             console.log('cron message________@' + target.handle + '_________');
             console.log('message: ', message);
-            tweetBot.sendTweetToUser(target.handle, message);
+            // tweetBot.sendTweetToUser(target.handle, message);
           }.bind(null, targets[i], messages, hashtags));
           console.log(targets[i].interval);
         }

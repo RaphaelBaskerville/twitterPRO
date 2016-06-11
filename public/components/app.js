@@ -1,7 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
 import { Link } from 'react-router';
-import {browserHistory} from 'react-router';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -24,8 +23,6 @@ class App extends Component {
 
   
   logoutClick(){
-    console.log(this.props);
-    console.log("logout Click");
     window.localStorage.removeItem('id_token');
     this.props.logout();
     this.context.router.push('/');
@@ -36,8 +33,11 @@ class App extends Component {
     return (
        <div className="navbar navbar-default">
         <h1>TwiDerpRo
-          <button className="btn btn-danger pull-xs-right" onClick={ this.logoutClick.bind(this) }>Log out</button>
-          <Link to='/' className="btn btn-primary pull-xs-right">Home</Link>
+           {this.props.isAuthenticated ?
+            <button className="btn btn-danger pull-xs-right" onClick={ this.logoutClick.bind(this) }>Log out</button>
+                                      :
+            <a href='/auth/twitter' className="btn btn-primary pull-xs-right">Log In with Twitter</a>
+          }
         </h1>
         {this.props.children}
        </div>
