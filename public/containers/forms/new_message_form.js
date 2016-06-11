@@ -11,12 +11,11 @@ class CreateMessage extends Component {
   };
 
   onSubmit(props) {
-    console.log('onsubmit called with props: ', props);
     let payload = {};
     payload.list = this.props.activeGroup.name;
     payload.text = props.text;
 
-    this.props.postModel(props, payload, 'message')
+    this.props.postModel('message', payload)
       .then(() => {
         this.context.router.push('/groups');
       });
@@ -34,7 +33,7 @@ class CreateMessage extends Component {
         <div className={`form-group ${text.touched && text.invalid ? 'has-danger' : ''}`}>
           <label>New Target</label>
           <input type="text" className="form-control"  {...text} />
-          <div classname='text-help'>
+          <div className='text-help'>
           {text.touched ? text.error : ''}
           </div>
           </div>

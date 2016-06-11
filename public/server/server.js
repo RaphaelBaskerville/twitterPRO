@@ -72,7 +72,7 @@ passport.use(new TwitterStrategy({
     callbackURL: "/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, cb) {
-    console.log(profile);
+    console.log(profile._json.profile_background_image_url);
     //find the user
     db.User.find({ twitterId: profile.id }, function (err, data) {
       console.log('passport attempting to authorize');
@@ -83,7 +83,7 @@ passport.use(new TwitterStrategy({
         return cb(err, data[0]);  
         // otherwise make a new user and return the callback with the new user        
       } else {
-        new db.User({ twitterId:profile.id, username:profile.username, admin: false, profile:profile }).save(function(err, user){
+        new db.User({ twitterId:profile.id, username:profile.username, admin: false, profile:profile, imageUrl: profile._json.profile_background_image_url }).save(function(err, user){
           console.log('err', err);
           console.log('NEW USER', user);
           return cb(err, user);          

@@ -16,7 +16,7 @@ class CreateHashtag extends Component {
     payload.list = this.props.activeGroup.name;
     payload.text = props.text;
 
-    this.props.postModel(props, payload, 'hashtag')
+    this.props.postModel('hashtag', payload )
       .then(() => {
         this.context.router.push('/groups');
       });
@@ -34,7 +34,7 @@ class CreateHashtag extends Component {
         <div className={`form-group ${text.touched && text.invalid ? 'has-danger' : ''}`}>
           <label>New Hashtag</label>
           <input type="text" className="form-control"  {...text} />
-          <div classname='text-help'>
+          <div className='text-help'>
           {text.touched ? text.error : ''}
           </div>
           </div>

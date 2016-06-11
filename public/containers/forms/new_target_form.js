@@ -41,7 +41,7 @@ class CreateTarget extends Component {
         <div className={`form-group ${handle.touched && handle.invalid ? 'has-danger' : ''}`}>
           <label>New Target</label>
           <input type="text" className="form-control"  {...handle} />
-          <div classname='text-help'>
+          <div className='text-help'>
           {handle.touched ? handle.error : ''}
           </div>
           </div>

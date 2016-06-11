@@ -35,7 +35,7 @@ class CreateGroup extends Component {
         <div className={`form-group ${name.touched && name.invalid ? 'has-danger' : ''}`}>
           <label>New Group</label>
           <input type="text" className="form-control"  {...name} />
-          <div classname='text-help'>
+          <div className='text-help'>
           {name.touched ? name.error : ''}
           </div>
           </div>
