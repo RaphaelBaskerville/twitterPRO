@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { reduxForm } from 'redux-form';
-import { postModel } from '../../actions/model';
+import { postModel, getModel } from '../../actions/model';
 
 class CreateGroup extends Component {
   // grab router method from context //DANGER//
@@ -19,7 +19,8 @@ class CreateGroup extends Component {
 
     this.props.postModel('list', payload)
       .then(() => {
-        this.context.router.push('/');
+        this.props.getModel('list', '/user/'+ window.localStorage.getItem('username'));
+        this.context.router.push('/groups');
       })
   }
 
@@ -60,4 +61,4 @@ export default reduxForm({
   form: 'GroupNewForm',
   fields: ['name'],
   validate
-}, function(state){return {user:state.user}}, { postModel })(CreateGroup);
+}, function(state){return {user:state.user}}, { postModel, getModel })(CreateGroup);

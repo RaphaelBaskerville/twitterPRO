@@ -2,13 +2,22 @@ import React, { Component }  from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getModel, getTwitterObj } from '../actions/model';
+import { getModel, getTwitterObj, deleteModel } from '../actions/model';
 
 class TargetList extends Component {
   componentDidMount(){
     this.props.getModel('target', '/all/true');
 
   }
+  onDeleteClick(target) {
+    if (confirm('are you sure you want to delete ' + target.handle + '?')) {
+      this.props.deleteModel('handle', target.handle, 'target')
+        .then(() => {
+          this.props.getModel('target', '/all/true');
+        });
+    }
+  }
+
 
   renderList () {
     var groupTargets;
@@ -20,10 +29,14 @@ class TargetList extends Component {
             <li
             className='list-group-item' 
             key={ target.handle }>
-            <image src={target.imageUrl} />
+            <image className='target-image' src={target.imageUrl} />
             <Link to={ route }>
               { target.handle }
             </Link>
+            <span
+            className="pull-xs-right deletebtn" 
+            onClick={ this.onDeleteClick.bind(this, target) }>
+            del</span>
           </li>
         );    
       })
@@ -55,7 +68,7 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getModel, getTwitterObj }, dispatch);
+  return bindActionCreators({ getModel, getTwitterObj, deleteModel }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TargetList);

@@ -46,7 +46,8 @@ class App extends Component {
   }
 
   
-  logoutClick(){
+  logoutClick(e){
+    e.stopPropagation();
     this.props.logout();
     browserHistory.push('/');
   }
@@ -54,19 +55,17 @@ class App extends Component {
 
   render () {
     let { activeUser } = this.props;
-    console.log('app RERENDER')
-    console.log('activeUser', activeUser);
     return (
        <div>
         <div className="navbar navbar-default">
           <h1>
             TwiDerpRo
-            { activeUser ? <img className="pull-xs-right" src={ activeUser.profile_image_url } /> : 'Xx' }
             { this.props.isAuthenticated  ?
-              <a className="btn btn-danger pull-xs-right" onClick={ this.logoutClick.bind(this) }>Log out</a>
+              <button className="btn btn-danger pull-xs-right" onClick={ this.logoutClick.bind(this) }>Log out</button>
                                           :
               <a href='/auth/twitter' className="btn btn-primary pull-xs-right">Log In with Twitter</a>
             }
+            { activeUser ? <img className="pull-xs-right" src={ activeUser.profile_image_url } /> : '' }
           </h1>
         </div>
         { this.props.children }

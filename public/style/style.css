@@ -15,3 +15,12 @@
 .target-profile{
   /*margin-top: 25px;*/
 }
+.centered {
+  float:none;
+  margin: 0 auto;
+  width: 50%;
+}
+
+.target-image {
+  margin-right: 10px;
+}

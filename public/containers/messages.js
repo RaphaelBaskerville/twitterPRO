@@ -2,11 +2,19 @@ import React, { Component }  from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { getModel } from '../actions/model';
+import { getModel, deleteModel } from '../actions/model';
 
 class MessagesList extends Component {
   componentDidMount(){
     this.props.getModel('message', '/all/true', 'NEW_MODELS');
+  }
+  onDeleteClick(message) {
+    if (confirm('are you sure you want to delete ' + message.text + '?')) {
+      this.props.deleteModel('text', message.text, 'message')
+        .then(() => {
+          this.props.getModel('message', '/all/true');
+        });
+    }
   }
   
   renderList () {
@@ -19,6 +27,10 @@ class MessagesList extends Component {
           className='list-group-item' 
           key={ message.text }> 
           { message.text}
+          <span
+            className="pull-xs-right deletebtn" 
+            onClick={ this.onDeleteClick.bind(this, message) }>
+            del</span>
           </li>
         )
       })
@@ -50,7 +62,7 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ getModel: getModel }, dispatch);
+  return bindActionCreators({ getModel, deleteModel }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessagesList);
