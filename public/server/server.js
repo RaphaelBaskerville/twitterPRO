@@ -165,63 +165,6 @@ app.get('*', function (req, res){
   res.sendFile(path.join(__dirname, '../../', 'index.html'));
 });
 
-
-//TODO: this is terrible need to fix.
-var autoTweet = function() {
-  var targets, messages, hashtags;
-  // wait
-  db.Target.find({}).then(function(data) {
-    targets = data;
-    console.log('targets done');
-    targets.forEach(function(target) {
-      console.log(target.handle);
-    });
-    console.log('________________');
-    // wait
-    db.Message.find({}).then(function(data) {
-      messages = data;
-      console.log('messages done');
-      messages.forEach(function(message) {
-        console.log(message.text);
-      });
-      console.log('________________');
-      //wait
-      db.HashTag.find({}).then(function(data) {
-        hashtags = data;
-        console.log('hashtags done');
-        hashtags.forEach(function(hashtag) {
-          console.log(hashtag.text);
-        });
-        console.log('________________');
-        // console.log('hashtags done', hashtags);
-
-        function randomElement(array) {
-          var size = array.length;
-          return array[Math.floor(Math.random() * size)];
-        };
-
-        for (var i = 0; i < targets.length; i++) {
-          var group = targets[i].list;
-          messages[group] = messages.filter(function(message){
-            return message.list === group;
-          });
-          hashtags[group] = hashtags.filter(function(hashtag){
-            return hashtag.list === group;
-          });
-
-          targets[i].loop = new schedule.scheduleJob(targets[i].interval, function(target) {
-            var group = target.list;
-            message = randomElement(messages[group]).text + ' #' + randomElement(hashtags[group]).text;
-            console.log('cron message________@' + target.handle + '_________');
-            console.log('message: ', message);
-            // tweetBot.sendTweetToUser(target.handle, message);
-          }.bind(null, targets[i], messages, hashtags));
-        }
-      });
-    });
-  });
-};
-
 var userTweets = function () {
   db.User.find({})
     .then(function(users){
@@ -276,7 +219,6 @@ var userTweets = function () {
 };
 
 // uncomment to enable tweets
-// autoTweet();
 userTweets();
 
 console.log('app listening: ', port);
