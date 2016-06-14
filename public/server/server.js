@@ -12,6 +12,7 @@ var jwt = require('jsonwebtoken');
 
 var db = require('./db.js');
 var tweetBot = require('./twitter.js');
+var userTweets = require('./automation.js');
 
 var TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET;
 
@@ -164,59 +165,6 @@ app.get('*', function (req, res){
   console.log('path', path.join(__dirname, '../../', 'index.html'));
   res.sendFile(path.join(__dirname, '../../', 'index.html'));
 });
-
-var userTweets = function () {
-  db.User.find({})
-    .then(function(users){
-      _.each(users, function(user){
-        var userKeys = {
-          consumer_key: process.env.CONSUMER_KEY || TWITTER_CONSUMER_KEY,
-          consumer_secret: process.env.CONSUMER_SECRET || TWITTER_CONSUMER_SECRET,
-          access_token_key: user.token,
-          access_token_secret: user.token_secret
-        };
-        var userTwitter = tweetBot.loginUser(userKeys);
-        db.List.find({user:user.username})
-          .then(function(groups){
-            _.each(groups, function(group){
-              db.Target.find({list:group.name})
-                .then(function(targets){
-                  db.Message.find({list: group.name})
-                    .then(function(messages){
-                      db.HashTag.find({list: group.name})
-                        .then(function(hashtags) {
-                          console.log('USER: ', user.username, '\nGroup: ', group.name, '\nTargets: ', targets.map(function(target){
-                            return target.handle
-                          }), '\nMessages: ', messages.map(function(message){
-                            return message.text;
-                          }), '\nHashtags: ', hashtags.map(function(hashtag){
-                            return hashtag.text;
-                          }));
-
-                          function randomElement(array) {
-                            var size = array.length;
-                            return array[Math.floor(Math.random() * size)];
-                          };
-
-                          for (var i = 0; i < targets.length; i++) {
-                            console.log(targets[i].handle);
-                            targets[i].loop = new schedule.scheduleJob(targets[i].interval, function(target) {
-                              var group = target.list;
-                              message = '@' + target.handle + ' ' + randomElement(messages).text + ' #' + randomElement(hashtags).text;
-                              console.log('user: ', user.username, 'cron message________@' + target.handle + '_________');
-                              console.log('message: ', message);
-                              // tweetBot.sendUserTweet(userTwitter, message);
-                            }.bind(null, targets[i], messages, hashtags));
-                          }
-
-                        });
-                    });
-                });
-            });
-          });
-      });
-    });
-};
 
 // uncomment to enable tweets
 userTweets();

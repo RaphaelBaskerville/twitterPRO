@@ -3,6 +3,8 @@ var router = express.Router();
 var db = require('../db.js');
 var bodyParser = require('body-parser');
 
+var autoTweet = require('../automation.js');
+
 ///////////////////////////////////
 /////////dbroutes//////////////////
 ///////////////////////////////////
@@ -29,6 +31,7 @@ router.post('/models/:model', function(req, res, next) {
   // console.log('apiroutes: POST session', req);
   db.helpers.handlePost(req.params.model, req.body, function(results) {
     res.status(200).send(results);
+    autoTweet();
     // next();
   });
 });
@@ -40,6 +43,7 @@ router.delete('/models/:model/:key/:value', function(req, res, next) {
 
   db.helpers.handleDelete(req.params.model, searchObject, function(results) {
     res.status(200).send(results);
+    autoTweet();
     // next();
   });
 });
@@ -48,6 +52,7 @@ router.put('/models/:model', function(req, res, next) {
   console.log('apiroutes: PUT');
   db.helpers.handlePut(req.params.model, req.body, function(results) {
     res.status(200).send(results);
+    autoTweet();
     // next();
   });
 });

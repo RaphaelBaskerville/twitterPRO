@@ -1,11 +1,16 @@
 var mongoose = require('mongoose');
 var findorcreate = require('mongoose-findorcreate');
+var mongoKeys;
 
 // var Schema = mongoose.Schema;
-
+if (process.env.NODE_ENV !== 'production') {
+  mongoKeys = require('./mongoKeys');
+} else {
+  mongoKeys = process.env.MONGO_KEY;
+}
 // specify which db to use and where it is.
 // mongoose.connect('mongodb://localhost/twitterBot');
-mongoose.connect('mongodb://dev:dev@ds045684.mlab.com:45684/simplecrud');
+mongoose.connect(mongoKeys);
 
 var db = mongoose.connection;
 
@@ -13,9 +18,6 @@ db.on('error', console.error.bind(console, "Connected error"));
 
 db.once('open', function() {
   console.log("Database connected");
-  User.find({}).then(function (data) {
-  console.log('users in this db',data);
-});
 });
 
 var UserSchema = mongoose.Schema({
@@ -51,7 +53,7 @@ var TargetSchema = mongoose.Schema({
   },
   interval: String,
   list: String,
-  imageUrl: String,
+  imageUrl: String
 });
 
 var MessageSchema = mongoose.Schema({
