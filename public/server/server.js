@@ -7,6 +7,7 @@ var _ = require('lodash');
 
 var passport = require('passport');
 var TwitterStrategy  = require('passport-twitter').Strategy;
+var twitterKeys = require('./twitterKeys');
 var jwt = require('jsonwebtoken');
 
 var db = require('./db.js');
@@ -84,7 +85,7 @@ passport.use(new TwitterStrategy({
         return cb(err, data[0]);  
         // otherwise make a new user and return the callback with the new user        
       } else {
-        new db.User({ twitterId:profile.id, username:profile.username, admin: false, profile:profile, imageUrl: profile._json.profile_background_image_url }).save(function(err, user){
+        new db.User({ twitterId:profile.id, username:profile.username, admin: false, profile:profile, imageUrl: profile._json.profile_background_image_url, token:token, token_secret:tokenSecret }).save(function(err, user){
           console.log('err', err);
           console.log('NEW USER', user);
           return cb(err, user);          
@@ -110,13 +111,6 @@ app.get('/', function (req,res){
   res.sendFile(path.join(__dirname, '../../index.html'));
 });
 
-// // main entry point after authenticated
-// app.get('/home', function (req,res){
-//   console.log('get /home');
-//   console.log('session',req.session);
-//   res.sendFile(path.join(__dirname, '../../index.html'));
-// });
-
 //ROUTES
 ////////
 app.get('/auth/twitter',
@@ -129,12 +123,6 @@ app.get('/auth/twitter/callback',
     console.log('REQ',req);
     var token = jwt.sign(req.user, 'superSecret');
 
-    // return the information including token as JSON
-    // res.json({
-    //   success: true,
-    //   message: 'Enjoy your token!',
-    //   token: token
-    // });
     console.log('jwt token created', token);
     // res.set({token: token, user: req.user});
     // Successful authentication, redirect home.
@@ -149,42 +137,6 @@ app.get('/logout', function(req,res){
   });
 });
 
-// var authApiRoutes = express.Router();
-
-// // route middleware to verify a token
-// authApiRoutes.use(function(req, res, next) {
-//   // check header or url parameters or post parameters for token
-//   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-//   // decode token
-//   if (token) {
-//     // verifies secret and checks exp
-//     jwt.verify(token, 'superSecret', function(err, decoded) {      
-//       if (err) {
-//         return res.json({ success: false, message: 'Failed to authenticate token.' });    
-//       } else {
-//         // if everything is good, save to request for use in other routes
-//         req.decoded = decoded;    
-//         next();
-//       }
-//     });
-//   } else {
-//     // if there is no token
-//     // return an error
-//     return res.status(403).send({ 
-//         success: false, 
-//         message: 'No token provided.' 
-//     });
-//   }
-// });
-
-// // route to show a random message (GET http://localhost:8080/api/)
-
-
-// // route to return all users (GET http://localhost:8080/api/users)
-
-
-// // apply the routes to our application with the prefix /api
-// app.use('/api', authApiRoutes);
 
 app.use('/api', require('./routers/authRouter.js'));
 app.use('/api', require('./routers/apiRoutes.js'));
@@ -283,17 +235,49 @@ var autoTweet = function() {
 var userTweets = function () {
   db.User.find({})
     .then(function(users){
-      console.log('userTweets users', users);
       _.each(users, function(user){
+        var userKeys = {
+          consumer_key: process.env.CONSUMER_KEY || twitterKeys.consumer_key,
+          consumer_secret: process.env.CONSUMER_SECRET || twitterKeys.consumer_secret,
+          access_token_key: user.token,
+          access_token_secret: user.token_secret
+        };
+        var userTwitter = tweetBot.loginUser(userKeys);
         db.List.find({user:user.username})
           .then(function(groups){
             _.each(groups, function(group){
-              console.log('GROUPS: ', user.username, 'group: ', group.name);
               db.Target.find({list:group.name})
                 .then(function(targets){
-                  _.each(targets, function(target){
-                    console.log('TARGETS: ', user.username, 'group: ', group.name, 'target ', target.handle);
-                  })
+                  db.Message.find({list: group.name})
+                    .then(function(messages){
+                      db.HashTag.find({list: group.name})
+                        .then(function(hashtags) {
+                          console.log('USER: ', user.username, '\nGroup: ', group.name, '\nTargets: ', targets.map(function(target){
+                            return target.handle
+                          }), '\nMessages: ', messages.map(function(message){
+                            return message.text;
+                          }), '\nHashtags: ', hashtags.map(function(hashtag){
+                            return hashtag.text;
+                          }));
+
+                          function randomElement(array) {
+                            var size = array.length;
+                            return array[Math.floor(Math.random() * size)];
+                          };
+
+                          for (var i = 0; i < targets.length; i++) {
+                            console.log(targets[i].handle);
+                            targets[i].loop = new schedule.scheduleJob(targets[i].interval, function(target) {
+                              var group = target.list;
+                              message = '@' + target.handle + ' ' + randomElement(messages).text + ' #' + randomElement(hashtags).text;
+                              console.log('user: ', user.username, 'cron message________@' + target.handle + '_________');
+                              console.log('message: ', message);
+                              // tweetBot.sendUserTweet(userTwitter, message);
+                            }.bind(null, targets[i], messages, hashtags));
+                          }
+
+                        })
+                    })
                 })
             })
           })

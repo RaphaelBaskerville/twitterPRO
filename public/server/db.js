@@ -28,6 +28,8 @@ var UserSchema = mongoose.Schema({
   admin: Number,
   username: { type: String, index: { unique: true } },
   imageUrl: String,
+  token: String,
+  token_secret: String
 });
 
 var ListSchema = mongoose.Schema({

@@ -27,7 +27,7 @@ tweetBot.loginUser = function (keys) {
   return new Twitter(keys);
 };
 
-tweetBot.sendUserTweet = function (twitterConnection, user, tweet) {
+tweetBot.sendUserTweet = function (twitterConnection, tweet) {
   twitterConnection.post('statuses/update', {
     status: tweet
   }, function (error, tweet){
@@ -35,7 +35,7 @@ tweetBot.sendUserTweet = function (twitterConnection, user, tweet) {
       console.log(error);
     } else {
       console.log('-------');
-      console.log('tweeted', tweet);
+      console.log('TWEETED', tweet.text);
       console.log('-------');
     }
   });
