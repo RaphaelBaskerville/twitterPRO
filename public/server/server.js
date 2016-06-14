@@ -7,7 +7,7 @@ var _ = require('lodash');
 
 var passport = require('passport');
 var TwitterStrategy  = require('passport-twitter').Strategy;
-var twitterKeys = require('./twitterKeys');
+// var twitterKeys = require('./twitterKeys');
 var jwt = require('jsonwebtoken');
 
 var db = require('./db.js');
@@ -23,7 +23,6 @@ var app = express();
 //serve static files
 //////////////////////
 var staticPath = path.join(__dirname, '../');
-console.log('static path',staticPath);
 app.use(express.static(staticPath));
 
 // middleware
@@ -74,13 +73,10 @@ passport.use(new TwitterStrategy({
     callbackURL: "/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, cb) {
-    console.log(profile._json.profile_background_image_url);
     //find the user
     db.User.find({ twitterId: profile.id }, function (err, data) {
-      console.log('passport attempting to authorize');
       //if the user does exist
       if (data[0]) {
-        console.log('exsisting user');
         // return the callback with existing user
         return cb(err, data[0]);  
         // otherwise make a new user and return the callback with the new user        
@@ -107,7 +103,6 @@ passport.deserializeUser(function(user, done) {
 
 // serve login page at '/'
 app.get('/', function (req,res){
-  console.log('get /');
   res.sendFile(path.join(__dirname, '../../index.html'));
 });
 
@@ -123,14 +118,12 @@ app.get('/auth/twitter/callback',
     console.log('REQ',req);
     var token = jwt.sign(req.user, 'superSecret');
 
-    console.log('jwt token created', token);
     // res.set({token: token, user: req.user});
     // Successful authentication, redirect home.
     res.redirect('/?'+token);
   });
 
 app.get('/logout', function(req,res){
-  console.log('logging out');
   req.logout();
   req.session.destroy(function(){
     res.send();
@@ -140,16 +133,13 @@ app.get('/logout', function(req,res){
 
 app.use('/api', require('./routers/authRouter.js'));
 app.use('/api', require('./routers/apiRoutes.js'));
-console.log('NODE PROCESS', process.env.NODE_ENV);
 
 //
 // twitter
 //
 
 app.get('/twitter/statuses/show/:id', function (req, res) {
-  console.log("SERVER: get /twitter/statuses/" + req.params.id);
   tweetBot.getTweetById(req.params.id, function (results){
-    console.log('SERVER: tweet fetched');
     res.status(200).send(results);
   });
 });
@@ -237,8 +227,8 @@ var userTweets = function () {
     .then(function(users){
       _.each(users, function(user){
         var userKeys = {
-          consumer_key: process.env.CONSUMER_KEY || twitterKeys.consumer_key,
-          consumer_secret: process.env.CONSUMER_SECRET || twitterKeys.consumer_secret,
+          consumer_key: process.env.CONSUMER_KEY || TWITTER_CONSUMER_KEY,
+          consumer_secret: process.env.CONSUMER_SECRET || TWITTER_CONSUMER_SECRET,
           access_token_key: user.token,
           access_token_secret: user.token_secret
         };
@@ -276,13 +266,13 @@ var userTweets = function () {
                             }.bind(null, targets[i], messages, hashtags));
                           }
 
-                        })
-                    })
-                })
-            })
-          })
-      })
-    })
+                        });
+                    });
+                });
+            });
+          });
+      });
+    });
 };
 
 // uncomment to enable tweets
