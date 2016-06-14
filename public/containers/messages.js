@@ -41,12 +41,14 @@ class MessagesList extends Component {
     return (
       <div>
         {this.props.activeGroup ?
-        <ul className="list-group col-sm-5">
+        <div className="col-sm-5">
           messages
-          { this.renderList() }
-          <div></div>
-          <Link to='/groups/message/new' className="btn btn-primary">New Message</Link>
-        </ul>
+          <Link to='/groups/message/new' className="new-link">new</Link>
+          <ul className="list-group model-list-container">
+            { this.renderList() }
+            <div></div>
+          </ul>
+        </div>
                                 :
         ''}                        
       </div>

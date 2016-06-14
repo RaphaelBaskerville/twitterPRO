@@ -32,7 +32,6 @@ class CreateHashtag extends Component {
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <h3> Create a new hashtag</h3>
         <div className={`form-group ${text.touched && text.invalid ? 'has-danger' : ''}`}>
-          <label>New Hashtag</label>
           <input type="text" className="form-control"  {...text} />
           <div className='text-help'>
           {text.touched ? text.error : ''}

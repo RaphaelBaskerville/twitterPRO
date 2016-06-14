@@ -1,11 +1,9 @@
-.red {
-  /*background-color: grey;*/
-}
 .btn {
   margin:5px 5px 5px 0px;
 }
 .deletebtn {
   color: red;
+  font-size:10px;
 }
 .target-profile-img {
   margin-right:15px;
@@ -23,4 +21,15 @@
 
 .target-image {
   margin-right: 10px;
+}
+
+.model-list-container {
+  max-height: 400px;
+  overflow: scroll;
+}
+.new-link {
+  margin-left: 10px;
+}
+.detail-view {
+  border-left: 1px solid black;
 }

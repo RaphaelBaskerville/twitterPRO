@@ -34,7 +34,7 @@ class GroupList extends Component {
       return (
           <li
           key={ group.name }
-          className='list-group-item'>
+          className={this.props.activeGroup.name === group.name ? 'list-group-item active' : 'list-group-item'}>
             <span onClick={ this.onSelectClick.bind(this, group) }>
             { group.name } 
             </span>
@@ -48,15 +48,18 @@ class GroupList extends Component {
   }
 
   render () {
+    console.log(this.props);
     return (
-      <div>
+      <div className="col-md-3">
       { this.props.isAuthenticated &&
-        <ul className="col-sm-4 red">
-        <h2>Group List: </h2>
-        select below
-        {this.renderList()}
-        <Link to="groups/new" className="btn btn-primary">New Group</Link>
-        </ul>
+        <div>
+          <h2>Group List: </h2>
+          <div>
+          select below
+          {this.renderList()}
+          <Link to="groups/new" className="btn btn-primary">New Group</Link>
+          </div>
+        </div>
       }
 
       {!this.props.isAuthenticated &&
@@ -71,7 +74,8 @@ function mapStateToProps (state) {
   return {
     groups: state.models.__LISTS,
     user:state.user,
-    isAuthenticated: state.isAuthenticated
+    isAuthenticated: state.isAuthenticated,
+    activeGroup:state.activeGroup
   }
 }
 

@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 import App from './components/app';
 
 import Welcome from './components/welcome';
+import d3 from './containers/d3';
 import GroupView from './components/group_view';
 import GroupDetail from './containers/group_detail';
 import CreateGroup from './containers/forms/new_group_form';

@@ -21,9 +21,7 @@ class App extends Component {
   };
 
   componentWillMount() {
-    console.log('APP will mount\n------------------');
     if(!this.props.isAuthenticated) {
-      console.log('user is not authenticated');
       let token = window.location.search.substr(1) || window.localStorage.getItem('id_token');
       try {
         let user = jwtDecode(token)._doc;
@@ -40,7 +38,6 @@ class App extends Component {
         console.log(err);
       }
     } else {
-      console.log('\n\nuser is authenticated already\n\n');
       browserHistory.push('/groups');
     }
   }
@@ -75,7 +72,6 @@ class App extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log('state.user', state.user)
   return {
     isAuthenticated: state.isAuthenticated,
     activeUser: state.user

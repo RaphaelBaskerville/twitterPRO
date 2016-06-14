@@ -47,12 +47,14 @@ class TargetList extends Component {
     return (
       <div>
       {this.props.activeGroup ?
-      <ul className="list-group col-sm-4">
+      <div className='col-sm-4'>
       targets
-      { this.renderList() }
-      <div></div>
-      <Link to='/groups/target/new' className="btn btn-primary">New Target</Link>
-      </ul>
+      <Link to='/groups/target/new' className="new-link">new</Link>
+        <ul className="list-group model-list-container">
+        { this.renderList() }
+        <div></div>
+        </ul>
+      </div>
                              :
       ''}
       </div>

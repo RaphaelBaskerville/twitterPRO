@@ -24,14 +24,12 @@ class CreateMessage extends Component {
   render() {
     
     const { fields: {text}, handleSubmit } = this.props;
-    console.log('\nCreateTarget props',this.props);
 
     return (
       <div className='col-sm-8 red'>
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-        <h3> Create a new target</h3>
+        <h3> Create a new message</h3>
         <div className={`form-group ${text.touched && text.invalid ? 'has-danger' : ''}`}>
-          <label>New Target</label>
           <input type="text" className="form-control"  {...text} />
           <div className='text-help'>
           {text.touched ? text.error : ''}
