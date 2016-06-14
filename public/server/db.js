@@ -178,5 +178,6 @@ module.exports = {
   Target: Target,
   Message: Message,
   HashTag: HashTag,
+  List: List,
   helpers: helpers
 };

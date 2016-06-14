@@ -23,6 +23,24 @@ if (process.env.NODE_ENV !== 'production') {
 }
 var twit = new Twitter(twitterKeys);
 
+tweetBot.loginUser = function (keys) {
+  return new Twitter(keys);
+};
+
+tweetBot.sendUserTweet = function (twitterConnection, user, tweet) {
+  twitterConnection.post('statuses/update', {
+    status: tweet
+  }, function (error, tweet){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('-------');
+      console.log('tweeted', tweet);
+      console.log('-------');
+    }
+  });
+};
+
 // requests user data from twitter, takes a user ID or screenname??
 tweetBot.getUserObj = function(user, callback) {
   twit.get('users/show', {

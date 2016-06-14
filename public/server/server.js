@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var path = require('path');
 var schedule = require('node-schedule');
+var _ = require('lodash');
 
 var passport = require('passport');
 var TwitterStrategy  = require('passport-twitter').Strategy;
@@ -125,7 +126,7 @@ app.get('/auth/twitter/callback',
   passport.authenticate('twitter', { failureRedirect: '/' }),
   function(req, res) {
     console.log('TWITTER AUTH CALLBACK');
-
+    console.log('REQ',req);
     var token = jwt.sign(req.user, 'superSecret');
 
     // return the information including token as JSON
@@ -258,21 +259,51 @@ var autoTweet = function() {
         };
 
         for (var i = 0; i < targets.length; i++) {
+          var group = targets[i].list;
+          messages[group] = messages.filter(function(message){
+            return message.list === group;
+          });
+          hashtags[group] = hashtags.filter(function(hashtag){
+            return hashtag.list === group;
+          });
+
           targets[i].loop = new schedule.scheduleJob(targets[i].interval, function(target) {
-            message = randomElement(messages).text + ' #' + randomElement(hashtags).text;
+            var group = target.list;
+            message = randomElement(messages[group]).text + ' #' + randomElement(hashtags[group]).text;
             console.log('cron message________@' + target.handle + '_________');
             console.log('message: ', message);
             // tweetBot.sendTweetToUser(target.handle, message);
           }.bind(null, targets[i], messages, hashtags));
-          console.log(targets[i].interval);
         }
       });
     });
   });
 };
 
+var userTweets = function () {
+  db.User.find({})
+    .then(function(users){
+      console.log('userTweets users', users);
+      _.each(users, function(user){
+        db.List.find({user:user.username})
+          .then(function(groups){
+            _.each(groups, function(group){
+              console.log('GROUPS: ', user.username, 'group: ', group.name);
+              db.Target.find({list:group.name})
+                .then(function(targets){
+                  _.each(targets, function(target){
+                    console.log('TARGETS: ', user.username, 'group: ', group.name, 'target ', target.handle);
+                  })
+                })
+            })
+          })
+      })
+    })
+};
+
 // uncomment to enable tweets
 // autoTweet();
+userTweets();
 
 console.log('app listening: ', port);
 var server = app.listen(port);

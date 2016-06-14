@@ -9,7 +9,6 @@ import CreateGroup from './containers/forms/new_group_form';
 import CreateTarget from './containers/forms/new_target_form';
 import CreateMessage from './containers/forms/new_message_form';
 import CreateHashtag from './containers/forms/new_hashtag_form';
-import {AuthenticatedComponent} from './containers/authContainer';
 import TargetProfile from './containers/target-profile.js';
 
 
