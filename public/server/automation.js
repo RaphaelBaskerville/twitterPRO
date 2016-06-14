@@ -18,11 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 module.exports = function () {
-  for (var i = 0; i < cronTargets.length; i++) {
-    console.log('canceling job #', i + 1);
-    cronTargets[i].cancel();
-  }
-  cronTargets = [];
+  cronTargets = clearTargets(cronTargets);
 
   db.User.find({})
     .then(function(users){
@@ -43,28 +39,33 @@ module.exports = function () {
                     .then(function(messages){
                       db.HashTag.find({list: group.name})
                         .then(function(hashtags) {
-
-                          function randomElement(array) {
-                            var size = array.length;
-                            return array[Math.floor(Math.random() * size)];
-                          };
-
                           for (var i = 0; i < targets.length; i++) {
-                           
                             cronTargets.push(new schedule.scheduleJob(targets[i].interval, function(target, messages, hashtags, cronTargets) {
-                              var group = target.list;
                               message = '@' + target.handle + ' ' + randomElement(messages).text + ' #' + randomElement(hashtags).text;
                               console.log('user: ', user.username, 'message: ', message);
                               // tweetBot.sendUserTweet(userTwitter, message);
-                              
                             }.bind(null, targets[i], messages, hashtags, cronTargets)));
-                          };
+                          }
+                          console.log('num of CRON TARGETS', cronTargets.length);
                         });
                     });
                 });
             });
-            console.log('num of CRON TARGETS', cronTargets.length);
           });
       });
     });
+};
+
+function clearTargets(cronJobs) {
+    console.log('canceling jobs');
+  _.each(cronJobs, function(cronJob, key){
+    cronJob.cancel();
+  })
+
+  return [];
+}
+
+function randomElement(array) {
+  var size = array.length;
+  return array[Math.floor(Math.random() * size)];
 };
