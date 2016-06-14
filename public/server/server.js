@@ -163,7 +163,7 @@ app.post('/twitterStream', function(req, res) {
 app.get('*', function (req, res){
   console.log('path', path.join(__dirname, '../../', 'index.html'));
   res.sendFile(path.join(__dirname, '../../', 'index.html'));
-})
+});
 
 
 //TODO: this is terrible need to fix.
