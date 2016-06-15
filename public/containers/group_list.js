@@ -48,7 +48,6 @@ class GroupList extends Component {
   }
 
   render () {
-    console.log(this.props);
     return (
       <div className="col-md-3">
       { this.props.isAuthenticated &&

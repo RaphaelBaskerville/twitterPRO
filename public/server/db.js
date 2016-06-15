@@ -53,7 +53,9 @@ var TargetSchema = mongoose.Schema({
   },
   interval: String,
   list: String,
-  imageUrl: String
+  imageUrl: String,
+  numOfTweets: Number,
+  user: String,
 });
 
 var MessageSchema = mongoose.Schema({
@@ -143,6 +145,7 @@ helpers.handlePost = function(model, payload, callback) {
   console.log('DB POST api/models CREATING NEW: ', model);
   console.log('payload', payload);
   console.log('----------------------');
+
   new models[model](payload).save(function(err, user) {
     if (err) {
       console.log('DB error on CREATE: ', err);
@@ -173,6 +176,12 @@ helpers.handlePut = function(model, payload, callback) {
   });
 };
 
+helpers.incrementTargetMessages = function(handle) {
+  console.log('inc ', handle);
+  Target.findOneAndUpdate({handle:handle}, {$inc: { numOfTweets: 1 } }).then(function(data){
+    console.log(data);
+  })
+};
 
 
 

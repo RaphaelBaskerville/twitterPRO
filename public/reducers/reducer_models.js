@@ -14,6 +14,7 @@ export default function (state = {
       console.log('updating state ', action.type);     
       let updateObj = {};
       updateObj[action.type] = action.payload.data;
+      console.log(updateObj)
       return Object.assign({}, state, updateObj);
   }
   return state;

@@ -52,6 +52,7 @@ module.exports = function () {
                   console.log('user: ', user.username, 'message: ', message);
 // UNCOMMENT TO GO LIVE!
                   // tweetBot.sendUserTweet(userTwitter, message);
+                  db.helpers.incrementTargetMessages(target.handle);
                 }.bind(null, targets[i], messages, hashtags, cronTargets)));
               }
             });

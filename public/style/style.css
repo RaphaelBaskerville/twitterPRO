@@ -16,7 +16,7 @@
 .centered {
   float:none;
   margin: 0 auto;
-  width: 50%;
+  text-align: center;
 }
 
 .target-image {
@@ -24,7 +24,7 @@
 }
 
 .model-list-container {
-  max-height: 400px;
+  max-height: 250px;
   overflow: scroll;
 }
 .new-link {
@@ -36,3 +36,6 @@
 /*h2 {
   background-color: rgba(0,0,0,0.3);
 }*/
+svg {
+  margin-top: 10px;
+}
