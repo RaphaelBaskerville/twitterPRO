@@ -7,12 +7,11 @@ export default class Welcome extends Component {
       <div className="row">
         <div className="centered">Welcome! Please LogIn with Twitter to continue</div>
         <Link to="/groups" className="btn btn-primary"> Groups </Link>
+        <Link to="/d3" className="btn btn-primary"> d3 </Link>
       </div>
     );
   }
 }
-        // removing d3 link till its good
-        // <Link to="/d3" className="btn btn-primary"> d3 </Link>
 
 
 
