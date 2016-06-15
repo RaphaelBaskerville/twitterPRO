@@ -32,13 +32,13 @@ class App extends Component {
 
         this.props.getTwitterObjForUserProfile(user.username)
           .then(function(data){
-            browserHistory.push('/');
+            browserHistory.push('/d3');
           });
       } catch (err) {
         console.log(err);
       }
     } else {
-      browserHistory.push('/');
+      browserHistory.push('/d3');
     }
   }
 
