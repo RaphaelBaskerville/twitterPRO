@@ -10,16 +10,19 @@ import { addData } from '../actions/addData';
 
 class d3svg extends Component {
   componentDidMount() {
+    console.log('d3 didMount');
     let user = window.localStorage.getItem('username');
     this.props.getModel('target', '/user/' + user)
   }
 
   render () {
    
+    console.log('d3 render');
+    console.log(this.props);
     let fakediv = fauxDom.createElement('div');
     if (this.props.targets) {
-    let width = 960;
-    let height = 500;
+    let width = 900;
+    let height = 250;
     let data = this.props.targets.__TARGETS;
     let barWidth = width / data.length;
 
@@ -60,9 +63,9 @@ class d3svg extends Component {
         return d.numOfTweets;
       });
       bar.append('text')
-      .attr('x', 30)
-      .attr('y', 450)
-      .attr('dy', ".75em")
+      .attr('x', 10)
+      .attr('y', 230)
+      .attr('dy', ".50em")
       .attr('fill', 'rgba(255,255,255,0.89)')
       .text(function(d){
         return "@" + d.handle;
@@ -73,12 +76,11 @@ class d3svg extends Component {
             
 
 
+    // <submit onClick={this.props.addData.bind(this)} className='btn btn-primary' >submit</submit>
     return (
         <div>
-          <div>
-            <submit onClick={this.props.addData.bind(this)} className='btn btn-primary' >submit</submit>
-          </div>
           {fakediv.toReact()}
+          <p className="centered">Number of tweets sent by twiDerp</p>
         </div>
     );
   }
