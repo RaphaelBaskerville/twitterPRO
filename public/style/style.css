@@ -31,5 +31,8 @@
   margin-left: 10px;
 }
 .detail-view {
-  border-left: 1px solid black;
+  border-left: 4px solid rgba(0,0,0,0.3);
 }
+/*h2 {
+  background-color: rgba(0,0,0,0.3);
+}*/
