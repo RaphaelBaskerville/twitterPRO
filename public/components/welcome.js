@@ -6,13 +6,13 @@ export default class Welcome extends Component {
     return (
       <div className="row">
         <div className="centered">Welcome! Please LogIn with Twitter to continue</div>
-        <Link to="/groups" className="btn btn-primary"> Groups </Link>
       </div>
     );
   }
 }
-        // removing d3 link till its good
+        // removing links until needed
         // <Link to="/d3" className="btn btn-primary"> d3 </Link>
+        // <Link to="/groups" className="btn btn-primary"> Groups </Link>
 
 
 
