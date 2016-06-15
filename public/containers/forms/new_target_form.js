@@ -15,6 +15,8 @@ class CreateTarget extends Component {
       handle:props.handle,
       list:this.props.activeGroup.name,
       interval:'*/1 * * * *',
+      user: window.localStorage.getItem('username'),
+      numOfTweets: 0
     };
     this.props.getTwitterObj(props.handle)
       .then((twitterdata) => {

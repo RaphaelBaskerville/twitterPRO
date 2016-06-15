@@ -10,31 +10,25 @@ import { addData } from '../actions/addData';
 
 class d3svg extends Component {
   componentDidMount() {
-      d3.select('svg')
-      .transition()
-      .duration(1000)
-      .style('background-color', 'rgba(0,0,0,0.1)')
-    
+    let user = window.localStorage.getItem('username');
+    this.props.getModel('target', '/user/' + user)
   }
-
-  shouldComponentUpdate(props) {
-    console.log('props', props);
-     return true;
-  }
-
 
   render () {
-
-
+   
+    let fakediv = fauxDom.createElement('div');
+    if (this.props.targets) {
     let width = 960;
     let height = 500;
-    let data = this.props.data;
+    let data = this.props.targets.__TARGETS;
     let barWidth = width / data.length;
-    let fakediv = fauxDom.createElement('div');
 
+    let largestValue = getHighestValue(data);
+    console.log(largestValue);
     let y = d3.scale.linear()
       .range([height, 0]);
-      y.domain([0,50]);
+
+      y.domain([0,getHighestValue(data)]);
 
     let svg = d3.select(fakediv).append('svg')
       .attr('width', width)
@@ -48,28 +42,44 @@ class d3svg extends Component {
           });
     bar.append("rect")
       .attr('y', function(d) {
-        console.log(d)
-        console.log(y(d));
-        return y(d);
+        return y(d.numOfTweets);
       })
       .attr('width', barWidth - 1)
       .attr('height', function(d){
-        console.log('height', height - y(d));
-        return height - y(d);
+        return height - y(d.numOfTweets);
       })
       .attr('fill', 'rgba(20,60,100,0.4)')
+    bar.append('text')
+      .attr('x', barWidth / 2)
+      .attr('y', function(d){
+        return y(d.numOfTweets) + 5;
+      })
+      .attr('dy', ".75em")
+      .attr('fill', 'rgba(255,255,255,0.89)')
+      .text(function(d){
+        return d.numOfTweets;
+      });
+      bar.append('text')
+      .attr('x', 30)
+      .attr('y', 450)
+      .attr('dy', ".75em")
+      .attr('fill', 'rgba(255,255,255,0.89)')
+      .text(function(d){
+        return "@" + d.handle;
+      });
+    }
            
 
             
 
 
     return (
-      <div>
         <div>
-          <submit onClick={this.props.addData.bind(this)} className='btn btn-primary' >submit</submit>
+          <div>
+            <submit onClick={this.props.addData.bind(this)} className='btn btn-primary' >submit</submit>
+          </div>
+          {fakediv.toReact()}
         </div>
-        {fakediv.toReact()}
-      </div>
     );
   }
 }
@@ -80,11 +90,15 @@ let options = {
   'cy': 75,
   'fill': 'purple'
 }
-
+function getHighestValue(array) {
+  return Math.max.apply(null, array.map(function(el){
+    return el.numOfTweets
+  }))
+}
 
 function mapStateToProps(state){
   return {
-    models: state.models,
+    targets: state.models,
     data: state.data
   }
 }
