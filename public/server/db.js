@@ -31,7 +31,7 @@ var UserSchema = mongoose.Schema({
   username: { type: String, index: { unique: true } },
   imageUrl: String,
   token: String,
-  token_secret: String
+  token_secret: String,
 });
 
 var ListSchema = mongoose.Schema({

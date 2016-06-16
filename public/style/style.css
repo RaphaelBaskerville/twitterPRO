@@ -39,3 +39,6 @@
 svg {
   margin-top: 10px;
 }
+svg text{
+  font-size: 10px;
+}
